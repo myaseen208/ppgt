@@ -1,5 +1,10 @@
 # ppgt: Pooled Group Testing Design Toolkit
 
+[![](https://img.shields.io/badge/License-GPL--3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/ppgt)](https://CRAN.R-project.org/package=ppgt)
+[![](https://cranlogs.r-pkg.org/badges/grand-total/ppgt)](https://cran.r-project.org/package=ppgt)
+
 ## Overview
 
 **ppgt** is an R package for constructing, analyzing, and comparing
