@@ -185,11 +185,11 @@ GPL-3
 Package author and maintainer: **Muhammad Yaseen**
 (<myaseen208@gmail.com>).
 
-Contributors: Christopher McMahan, Christopher Bilder, Joshua Tebbs, and
-Pranta Das.
+**Authors/Contributors**: Christopher McMahan, Christopher Bilder,
+Joshua Tebbs, and Pranta Das.
 
 ``` R
-Yaseen, M. (2026). ppgt: Pooled Group Testing Design Toolkit.
+Yaseen, M., McMahan, C.,  Bilder, C., Tebbs, J. and Das, P. (2026). ppgt: Pooled Group Testing Design Toolkit.
 R package version 0.1.2. https://github.com/myaseen208/ppgt
 ```
 

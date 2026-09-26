@@ -2,13 +2,14 @@ bibentry(
   bibtype = "Manual",
   title = "ppgt: Pooled Group Testing Design Toolkit",
   author = c(
-    person("Muhammad", "Yaseen"),
-    person("Christopher", "McMahan"),
-    person("Christopher", "Bilder"),
-    person("Joshua",      "Tebbs"),
-    person("Pranta",      "Das")
+    person("M.", "Yaseen"),
+    person("C.", "McMahan"),
+    person("C.", "Bilder"),
+    person("J.", "Tebbs"),
+    person("P.", "Das")
   ),
   year = "2026",
   note = "R package version 0.1.2",
-  url = "https://github.com/myaseen208/ppgt"
+  url = "https://github.com/myaseen208/ppgt",
+  biblatex = TRUE
 )

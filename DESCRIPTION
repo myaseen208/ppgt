@@ -4,10 +4,11 @@ Title: Pooled Group Testing Design Toolkit
 Version: 0.1.2
 Authors@R: c(
     person("Muhammad", "Yaseen", email = "myaseen208@gmail.com", role = c("aut", "cre", "cph")),
-    person("Christopher", "McMahan", role = "ctb", comment = c(ORCID = "0000-0001-5056-9615")),
-    person("Christopher", "Bilder",  role = "ctb", comment = c(ORCID = "0000-0002-2848-8576")),
-    person("Joshua",      "Tebbs",   role = "ctb", comment = c(ORCID = "0000-0002-6762-7241")),
-    person("Pranta",      "Das",     role = "ctb"))
+    person("Christopher", "McMahan", role = c("aut", "ctb"), comment = c(ORCID = "0000-0001-5056-9615")),
+    person("Christopher", "Bilder",  role = c("aut", "ctb"), comment = c(ORCID = "0000-0002-2848-8576")),
+    person("Joshua",      "Tebbs",   role = c("aut", "ctb"), comment = c(ORCID = "0000-0002-6762-7241")),
+    person("Pranta",      "Das",     role = c("aut", "ctb"))
+    )
 Description: Provides tools for constructing, analyzing, and comparing 
     pooled group testing designs. Includes implementations of polynomial 
     pooling, PBEST, HYPER, separable and disjunct matrices, and finite-field 
