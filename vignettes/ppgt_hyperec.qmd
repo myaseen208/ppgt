@@ -1,0 +1,123 @@
+---
+title: "HyperEC: Package-Specific Experimental Extension"
+author: "Muhammad Yaseen"
+date: last-modified
+format:
+  html:
+    self-contained: true
+    number-sections: true
+    toc: true
+    toc-depth: 3
+    highlight-style: github
+    code-fold: false
+    code-tools: true
+    html-math-method: mathjax
+vignette: >
+  %\VignetteIndexEntry{HyperEC: Package-Specific Experimental Extension}
+  %\VignetteEngine{quarto::html}
+  %\VignetteEncoding{UTF-8}
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = " ")
+if (requireNamespace("ppgt", quietly = TRUE)) {
+  library(ppgt)
+} else {
+  pkgload::load_all(export_all = FALSE, helpers = FALSE, quiet = TRUE)
+}
+```
+
+# Abstract
+
+This vignette covers the package-specific experimental HyperEC extension. The
+functions `hyper_ec_matrix()` and `hyper_ec_decode()` are not the HYPER paper
+design itself. They are documented as package-specific experimental tools built
+on top of a base HYPER matrix.
+
+# Scope And Limits
+
+The current HyperEC interface combines:
+
+1. a base HYPER matrix
+2. additional parity-derived rows
+3. a bounded decoder that searches for a low-weight correction pattern
+
+This should be interpreted as a package experiment. It is not an exact
+implementation of a Hong et al. HyperEC procedure.
+
+The returned object contains a base HYPER matrix together with additional
+parity-derived rows. If the combined incidence matrix is denoted by
+$\mathbf{M}_{\mathrm{EC}}$, then the package reports
+$$
+\mathbf{M}_{\mathrm{EC}}
+=
+\begin{bmatrix}
+\mathbf{M}_{\mathrm{base}} \\
+\mathbf{M}_{\mathrm{parity}}
+\end{bmatrix},
+$$
+but the exact parity-generation rule and the decoder interpretation are
+package-specific rather than paper-backed claims.
+
+# Building An Experimental HyperEC Design
+
+```{r hyper-ec-build}
+hyper_ec_design <- hyper_ec_matrix(n = 64, k = 2, q = 2, alpha = 0.20)
+hyper_ec_design
+
+dim(hyper_ec_design$matrix)
+dim(hyper_ec_design$matrix_base)
+dim(hyper_ec_design$matrix_parity)
+```
+
+The combined design contains a base matrix and additional parity-derived rows.
+
+# Inspecting The Experimental Metadata
+
+```{r hyper-ec-metadata}
+hyper_ec_design$error_correction
+hyper_ec_design$efficiency
+range(Matrix::colSums(hyper_ec_design$matrix))
+```
+
+The stored `error_correction` value is a package search limit used by the
+current decoder implementation. It should not be interpreted as a formal
+literature-backed correction guarantee.
+
+# A Small Decode Example
+
+```{r hyper-ec-decode}
+Y_tilde_hyper_ec <- rep(0L, 64)
+Y_tilde_hyper_ec[c(3, 20)] <- 1L
+Y_tilde_hyper_ec
+
+z_hyper_ec <- as.integer(
+  as.vector(hyper_ec_design$matrix %*% Y_tilde_hyper_ec) > 0
+)
+z_hyper_ec
+
+decode_hyper_ec <- hyper_ec_decode(z_hyper_ec, hyper_ec_design)
+decode_hyper_ec
+```
+
+# Interpretation
+
+The object returned by `hyper_ec_decode()` is best read as a stage-1 candidate
+screening result under the package's current parity model, not as a general
+error-correction guarantee.
+
+# Experimental Boundary
+
+This vignette is intentionally separate from the HYPER vignette so that the
+package-specific extension is not presented as paper-aligned HYPER behavior.
+
+# References
+
+- Hong, F. S., Shah, N., Briggs, A., et al. (2022). HYPER group testing for
+  SARS-CoV-2: A flexible, easy-to-implement, and highly efficient method.
+  *Nature Communications*, 13, Article 3626.
+- Package-specific experimental implementation in `R/tapestry_hyperec.R`.

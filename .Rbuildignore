@@ -1,0 +1,10 @@
+^doc$
+^Meta$
+^vignettes-src$
+^docs$
+^_pkgdown\.yml$
+^README\.qmd$
+^NEWS\.qmd$
+^README_files$
+^NEWS_files$
+^\.quarto$

@@ -1,0 +1,24 @@
+Package: ppgt
+Type: Package
+Title: Pooled Group Testing Design Toolkit
+Version: 0.1.1
+Authors@R: person("Muhammad", "Yaseen", email = "myaseen208@gmail.com", role = c("aut", "cre", "cph"))
+Description: Provides tools for constructing, analyzing, and comparing 
+    pooled group testing designs. Includes implementations of polynomial 
+    pooling, PBEST, HYPER, separable and disjunct matrices, and finite-field 
+    utilities.
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+Language: en-US
+Depends: R (>= 4.2.0)
+Imports: Matrix, stats, utils
+Suggests: covr, devtools, knitr, pkgdown, pkgload, quarto, rmarkdown,
+    spelling, testthat (>= 3.0.0)
+Config/testthat/edition: 3
+VignetteBuilder: quarto
+Roxygen: list(markdown = TRUE)
+URL: https://github.com/myaseen208/ppgt,
+    https://myaseen208.github.io/ppgt
+BugReports: https://github.com/myaseen208/ppgt/issues
+Config/roxygen2/version: 8.1.0

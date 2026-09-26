@@ -1,0 +1,320 @@
+---
+title: "Polynomial Pools: Construction, Truncation, and Decoding"
+author: "Muhammad Yaseen"
+date: last-modified
+format:
+  html:
+    self-contained: true
+    number-sections: true
+    toc: true
+    toc-depth: 3
+    highlight-style: github
+    code-fold: false
+    code-tools: true
+    html-math-method: mathjax
+vignette: >
+  %\VignetteIndexEntry{Polynomial Pools: Construction, Truncation, and Decoding}
+  %\VignetteEngine{quarto::html}
+  %\VignetteEncoding{UTF-8}
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = " ")
+if (requireNamespace("ppgt", quietly = TRUE)) {
+  library(ppgt)
+} else {
+  pkgload::load_all(export_all = FALSE, helpers = FALSE, quiet = TRUE)
+}
+```
+
+# Abstract
+
+This vignette develops the Polynomial Pools (PP) construction implemented by
+`pp_matrix()`. It describes the full design with $N = q^d$, the package
+handling of truncated designs with $N < q^d$, and the public decoding
+helpers `pp_comp()`, `pp_gpsr()`, `pp_decode()`, and `pp_validate()`.
+
+# PP Construction
+
+Let $\mathbf{M} \in \{0,1\}^{J \times N}$ denote a PP matrix. In the full
+untruncated construction:
+
+- $N = q^d$
+- $J = n_l q$
+- $w_i = |\mathcal{J}_i| = n_l$ for every individual $i$
+- $n_j = |\mathcal{P}_j| = q^{d-1}$ for every pool $j$
+
+The construction indexes individuals by field-valued coordinates and assigns
+them to pools by polynomial evaluation over $GF(q)$. In the full design,
+the number of pools is $J = n_l q$, and the standard COMP detection bound
+is $k_{\max} = \left\lfloor (n_l - 1) / (d - 1) \right\rfloor$.
+
+More explicitly, a PP design with field order $q$ and dimension $d$ starts
+from the full ambient index set of size
+$$
+N_{\max} = q^d.
+$$
+Individuals are represented by field-valued coordinate tuples, and each layer
+corresponds to a family of polynomial evaluations over $\mathrm{GF}(q)$. In
+the full design,
+$$
+J = n_l q,
+\qquad
+w_i = n_l,
+\qquad
+n_j = q^{d-1},
+\qquad
+k_{\max} = \left\lfloor \frac{n_l - 1}{d - 1} \right\rfloor.
+$$
+The PP intersection bound implies that any two distinct individuals share at
+most $d - 1$ pools.
+
+## Why The COMP Bound Follows
+
+The PP guarantee used throughout the package is a direct consequence of the
+intersection bound and the uniform column weight $w_i = n_l$ in the full
+design.
+
+Let $i^\star$ be an uninfected individual and let
+$\mathcal{S} \subseteq \{1, \ldots, N\}$ be the active set of truly infected
+individuals, with $|\mathcal{S}| = k$. Since any two distinct columns of a PP
+matrix meet in at most $d - 1$ pools, the pools containing $i^\star$ that are
+also contaminated by positives are bounded by
+$$
+\left|
+\mathcal{J}_{i^\star}
+\cap
+\bigcup_{i \in \mathcal{S}} \mathcal{J}_i
+\right|
+
+\le
+k(d - 1).
+$$
+If
+$$
+n_l > k(d - 1),
+$$
+then at least one pool containing $i^\star$ remains negative, so COMP removes
+$i^\star$ from the candidate set. Solving this inequality for the largest
+guaranteed $k$ yields
+$$
+k_{\max}
+=
+\left\lfloor \frac{n_l - 1}{d - 1} \right\rfloor.
+$$
+That is the package-wide reason the PP help pages state exact COMP recovery for
+active sets up to $k_{\max}$.
+
+# Building A PP Matrix
+
+```{r build-pp}
+M_pp <- pp_matrix(q = 4, d = 3, nl = 5)
+M_pp
+
+dim(M_pp)
+attr(M_pp, "pp")
+```
+
+This small example matches the standard `q = 4`, `d = 3`, `k = 2` PP family
+used throughout the package documentation.
+
+# Verifying Structure
+
+```{r verify-pp}
+pp_summary <- pp_verify(M_pp)
+pp_summary
+```
+
+The helper checks the realized row sizes $n_j = |\mathcal{P}_j|$ and column
+weights $w_i = |\mathcal{J}_i|$.
+
+# Truncation Behavior
+
+The constructor also supports $N < q^d$. The column weights stay fixed at
+$w_i = n_l$, while row sizes near the truncation boundary need not stay
+equal.
+
+Operationally, truncation keeps the first $N$ columns of the full PP design and
+therefore preserves the layer structure at the individual level. The cost is
+that the uniform row identity $n_j = q^{d-1}$ is no longer guaranteed once some
+columns are removed.
+
+```{r truncation}
+M_trunc <- pp_matrix(q = 4, d = 3, nl = 5, N = 48)
+M_trunc
+
+dim(M_trunc)
+table(Matrix::rowSums(M_trunc))
+table(Matrix::colSums(M_trunc))
+M_trunc[1:8, 1:16]
+```
+
+This is the key structural distinction between the full PP design and a
+truncated one.
+
+## Matrix Products And PP Structure
+
+Two Gramian-style products are especially informative for PP matrices:
+$$
+\mathbf{M}\mathbf{M}^\top
+\qquad\text{and}\qquad
+\mathbf{M}^\top\mathbf{M}.
+$$
+For the full design, their diagonals recover the canonical row and column
+weights,
+$$
+(\mathbf{M}\mathbf{M}^\top)_{jj} = n_j = q^{d-1},
+\qquad
+(\mathbf{M}^\top\mathbf{M})_{ii} = w_i = n_l,
+$$
+while the off-diagonal entries record pairwise overlaps. The PP intersection
+bound is a statement about the off-diagonal entries of
+$\mathbf{M}^\top\mathbf{M}$:
+$$
+(\mathbf{M}^\top\mathbf{M})_{ii'}
+=
+|\mathcal{J}_i \cap \mathcal{J}_{i'}|
+\le d - 1
+\qquad
+\text{for } i \ne i'.
+$$
+This is the matrix-product view of the same combinatorial structure used by the
+COMP recovery argument.
+
+```{r pp-gramians}
+pp_pool_overlap <- Matrix::tcrossprod(M_pp)
+pp_pool_overlap
+
+pp_sample_overlap <- Matrix::crossprod(M_pp)
+pp_sample_overlap[1:12, 1:12]
+```
+
+# Latent And Observed Pool Status
+
+Given latent individual statuses
+$\widetilde{\mathbf{y}} \in \{0,1\}^N$, the latent pool status is
+$\widetilde{z}_j = \mathbb{I}\left(\sum_{i = 1}^N M_{ji}\widetilde{y}_i > 0\right)$.
+
+In the simple noiseless examples below, we set the observed outcomes equal to
+the latent pool statuses.
+
+Equivalently,
+$$
+\widetilde{\mathbf{z}}
+=
+\left(
+\mathbb{I}\left((\mathbf{M}\widetilde{\mathbf{y}})_1 > 0\right),
+\ldots,
+\mathbb{I}\left((\mathbf{M}\widetilde{\mathbf{y}})_J > 0\right)
+\right)^\top,
+$$
+and the noiseless examples use $\mathbf{z} = \widetilde{\mathbf{z}}$.
+
+```{r simulate-pp}
+Y_tilde <- rep(0L, 64)
+Y_tilde[c(2, 13)] <- 1L
+Y_tilde
+
+z <- as.integer(as.vector(M_pp %*% Y_tilde) > 0)
+z
+```
+
+# COMP Decoding
+
+```{r comp-pp}
+comp_result <- pp_comp(M_pp, z)
+comp_result
+```
+
+For this small example, `pp_comp()` recovers the two positives exactly.
+The COMP rule marks an individual as negative whenever that individual appears
+in at least one observed negative pool. If $\mathcal{N}_0 = \{j : Z_j = 0\}$
+is the set of negative pools, then the COMP candidate set is
+$$
+\mathcal{C}_{\mathrm{COMP}}
+=
+\left\{
+i \in \{1, \ldots, N\} :
+M_{ji} = 0 \text{ for all } j \in \mathcal{N}_0
+\right\}.
+$$
+
+# GPSR Candidate Scoring
+
+`pp_gpsr()` solves the nonnegative $\ell_1$-regularized least-squares
+problem used by the package sparse-scoring layer.
+
+In this decoder-local subsection, the symbols $\mathbf{A}$, $\mathbf{x}$, and
+$\mathbf{y}$ follow the sparse-reconstruction literature and are local to the
+decoder. They do not replace the package-wide canonical symbols
+$\mathbf{M}$, $\widetilde{\mathbf{y}}$, and $\mathbf{z}$. In that
+decoder-local notation, the scoring problem is
+$$
+\min_{\mathbf{x} \ge 0}
+\frac{1}{2}\|\mathbf{y} - \mathbf{A}\mathbf{x}\|_2^2
++ \tau \|\mathbf{x}\|_1,
+$$
+where $\mathbf{A}$ is typically the positive-pool submatrix restricted to the
+COMP candidate set. The solution is interpreted as a sparse score vector over
+those candidates rather than as a final binary call by itself.
+
+```{r gpsr-pp}
+A_sub <- M_pp[which(z == 1), comp_result$candidates, drop = FALSE]
+y_sub <- rep(1, nrow(A_sub))
+A_sub
+y_sub
+
+gpsr_result <- pp_gpsr(A_sub, y_sub)
+gpsr_result
+```
+
+# Complete Package Decoding Pipeline
+
+`pp_decode()` is the package pipeline combining COMP, verification, and GPSR
+refinement when needed. It is package functionality built around the PP matrix
+interface; it should not be described as a blanket claim of exact equivalence
+to every bundled upstream decoding path.
+
+The implemented logic is:
+
+1. threshold or binarize the observed pool outcomes $\mathbf{z}$
+2. run COMP to eliminate obvious negatives
+3. if the candidate set is already small enough, return a direct stage-1 call
+4. otherwise score the candidate set with GPSR
+5. search a bounded sparse subset and report package decoding outputs such as
+   `positive`, `suspected`, and `negative`
+
+```{r decode-pp}
+decode_result <- pp_decode(M_pp, z, verbose = FALSE)
+decode_result
+
+decode_result$positives
+decode_result$suspected
+decode_result$negatives[1:12]
+```
+
+# Validation Against Known Positives
+
+```{r validate-pp}
+validation <- pp_validate(decode_result$positives, c(2, 13))
+validation
+```
+
+# Exploring Candidate Configurations
+
+```{r pp-design}
+design_grid <- pp_design(N_min = 50, N_max = 150, M_max = 40, k_min = 2, pool_size_max = 32)
+design_grid
+head(design_grid, 6)
+```
+
+# References
+
+- Tan, Y. H. I. (2020). Pooling matrix designs for group testing. *SIAM
+  Undergraduate Research Online*, 13, 1-21.
+- PP reference algorithms as discussed in the package documentation and source
+  comparisons.

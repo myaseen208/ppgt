@@ -1,0 +1,98 @@
+---
+title: "Package Comparison Helpers"
+author: "Muhammad Yaseen"
+format:
+  html:
+    self-contained: true
+    number-sections: true
+    toc: true
+    toc-depth: 3
+    highlight-style: github
+    code-fold: false
+    code-tools: true
+    html-math-method: mathjax
+vignette: >
+  %\VignetteIndexEntry{Package Comparison Helpers}
+  %\VignetteEngine{quarto::html}
+  %\VignetteEncoding{UTF-8}
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = " ")
+if (requireNamespace("ppgt", quietly = TRUE)) {
+  library(ppgt)
+} else {
+  pkgload::load_all(export_all = FALSE, helpers = FALSE, quiet = TRUE)
+}
+```
+
+# Abstract
+
+The functions `compare_all_designs()` and `compare_all_designs_honest()` are
+package comparison helpers. They summarize matrices returned by package
+constructors and attach package-specific labels. Their outputs should not be
+read as direct literature results.
+
+# Comparing Package Constructors At A Common Size
+
+```{r compare-designs}
+comparison <- compare_all_designs(n = 64, prevalence = 0.01, alpha = 0.20)
+comparison
+
+comparison$comparison_table
+comparison$hyper$metrics
+comparison$pbest$metrics
+```
+
+The comparison table reports structural summaries such as $J$, $N$,
+$\lambda_{\max}$, and the ratio $J/N$.
+
+# Reading The Metrics
+
+For a design matrix $\mathbf{M} \in \{0,1\}^{J \times N}$, the helpers
+summarize:
+
+- $J$: number of pools
+- $N$: number of individuals
+- $J/N$: tests per individual in the design summary
+- $\lambda_{\max} = \max_i |\mathcal{J}_i|$: maximum column weight
+
+These summaries are intentionally structural. They compare the realized matrix
+dimensions, row/column weights, and package reporting labels for the generated
+design objects. They do not prove optimality, establish a universal ranking, or
+replace family-specific theoretical guarantees.
+
+# Comparing Package Reference Configurations
+
+```{r compare-honest}
+comparison_honest <- compare_all_designs_honest()
+comparison_honest
+
+comparison_honest$standard
+comparison_honest$n256
+comparison_honest$n384
+comparison_honest$summary
+```
+
+# Interpreting The Labels
+
+The package prints labels such as `Configuration`, `Error_Correction`, and the
+entries in `summary`. Those labels are package-specific reporting choices for
+these helpers. They are useful for package navigation, but they are not formal
+paper-backed guarantees.
+
+# References
+
+- Shental, N., Levy, S., Wuvshet, V., et al. (2020). Efficient high-throughput
+  SARS-CoV-2 testing to detect asymptomatic carriers. *Science Advances*,
+  6(37), eabc5961.
+- Ghosh, S., Agarwal, R., Rehan, M. A., et al. (2021). Tapestry: A
+  single-round smart pooling technique for COVID-19 testing.
+  *Nature Communications*, 12, Article 2995.
+- Hong, F. S., Shah, N., Briggs, A., et al. (2022). HYPER group testing for
+  SARS-CoV-2: A flexible, easy-to-implement, and highly efficient method.
+  *Nature Communications*, 13, Article 3626.

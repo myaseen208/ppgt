@@ -1,0 +1,236 @@
+---
+title: "Incidence-Matrix Diagnostics"
+author: "Muhammad Yaseen"
+date: last-modified
+format:
+  html:
+    self-contained: true
+    number-sections: true
+    toc: true
+    toc-depth: 3
+    highlight-style: github
+    code-fold: false
+    code-tools: true
+    html-math-method: mathjax
+vignette: >
+  %\VignetteIndexEntry{Incidence-Matrix Diagnostics}
+  %\VignetteEngine{quarto::html}
+  %\VignetteEncoding{UTF-8}
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = " ")
+if (requireNamespace("ppgt", quietly = TRUE)) {
+  library(ppgt)
+} else {
+  pkgload::load_all(export_all = FALSE, helpers = FALSE, quiet = TRUE)
+}
+```
+
+# Abstract
+
+This vignette develops two matrix diagnostics that are useful across the whole
+package:
+
+- pool overlap through $\mathbf{M}\mathbf{M}^\top$
+- sample co-occurrence through $\mathbf{M}^\top\mathbf{M}$
+
+These diagnostics are presented as vignette material only. They are not new
+exported package helpers.
+
+They also sit outside the constructor, decoder, simulation, and workflow APIs.
+The matrices
+$\mathbf{M}\mathbf{M}^\top$ and $\mathbf{M}^\top\mathbf{M}$ are
+interpretive summaries of a fixed design $\mathbf{M}$; they do not choose a
+decoder, execute retesting, or implement stage-2 protocol logic.
+
+# Architecture Boundary
+
+Within the package layer model:
+
+1. construction returns $\mathbf{M}$
+2. decoding interprets $\mathbf{z}$ relative to $\mathbf{M}$
+3. simulation generates $\widetilde{\mathbf{z}}$ and $\mathbf{z}$
+4. workflow execution coordinates stage-1 and optional stage-2 logic
+5. reporting summarizes stored workflow objects
+
+The diagnostics in this article belong to none of those execution layers. They
+are read-only summaries of a fixed incidence matrix.
+
+# Pool-Overlap Matrix
+
+For $\mathbf{M} \in \{0,1\}^{J \times N}$, the pool-overlap matrix is
+$\mathbf{M}\mathbf{M}^\top = \operatorname{tcrossprod}(\mathbf{M})$.
+
+The $(j, j')$ entry counts how many individuals belong to both
+$\mathcal{P}_j$ and $\mathcal{P}_{j'}$. The diagonal entries are the
+pool sizes $n_j$.
+
+More explicitly,
+$$
+(\mathbf{M}\mathbf{M}^\top)_{jj'}
+=
+\sum_{i=1}^N M_{ji} M_{j'i}
+=
+|\mathcal{P}_j \cap \mathcal{P}_{j'}|.
+$$
+
+```{r pool-overlap}
+M_pp <- pp_matrix(q = 4, d = 3, nl = 5)
+M_pp
+
+pool_overlap <- Matrix::tcrossprod(M_pp)
+pool_overlap
+
+diag(as.matrix(pool_overlap))
+```
+
+# Sample Co-Occurrence Matrix
+
+The sample co-occurrence matrix is
+$\mathbf{M}^\top \mathbf{M} = \operatorname{crossprod}(\mathbf{M})$.
+
+The $(i, i')$ entry counts how many pools contain both individuals
+$i$ and $i'$. The diagonal entries are the sample coverages
+$w_i$.
+
+Equivalently,
+$$
+(\mathbf{M}^\top \mathbf{M})_{ii'}
+=
+\sum_{j=1}^J M_{ji} M_{ji'}
+=
+|\mathcal{J}_i \cap \mathcal{J}_{i'}|.
+$$
+
+```{r sample-cooccurrence}
+sample_overlap <- Matrix::crossprod(M_pp)
+sample_overlap
+
+diag(as.matrix(sample_overlap))[1:12]
+```
+
+# Gramian Identities And Design Interpretation
+
+The two diagnostics can be read as exact Gramian identities:
+$$
+\mathbf{G}_{\mathrm{pool}}
+=
+\mathbf{M}\mathbf{M}^\top,
+\qquad
+\mathbf{G}_{\mathrm{sample}}
+=
+\mathbf{M}^\top\mathbf{M}.
+$$
+Their diagonal entries recover the canonical row and column weights,
+$$
+(\mathbf{G}_{\mathrm{pool}})_{jj} = n_j,
+\qquad
+(\mathbf{G}_{\mathrm{sample}})_{ii} = w_i,
+$$
+while their off-diagonal entries recover pairwise overlaps,
+$$
+(\mathbf{G}_{\mathrm{pool}})_{jj'} = |\mathcal{P}_j \cap \mathcal{P}_{j'}|,
+\qquad
+(\mathbf{G}_{\mathrm{sample}})_{ii'} = |\mathcal{J}_i \cap \mathcal{J}_{i'}|.
+$$
+This viewpoint is useful across all design families because it turns qualitative
+balance and overlap questions into direct matrix identities.
+
+# Why These Diagnostics Matter
+
+These matrices help interpret several design properties.
+
+- Balance:
+  the diagonals of $\mathbf{M}\mathbf{M}^\top$ and
+  $\mathbf{M}^\top\mathbf{M}$ show whether $n_j$ and $w_i$ are
+  constant.
+- Overlap control:
+  the off-diagonal entries show how often pools or individuals intersect.
+- Separable and disjunct behavior:
+  small sample co-occurrence makes it easier for different active sets to
+  induce distinguishable pooled outcomes, and makes it easier for an outside
+  individual to retain a pool that is not covered by a bounded active set.
+
+# Comparing A Full PP Design And A Truncated One
+
+```{r diagnostics-truncation}
+M_full <- pp_matrix(q = 4, d = 3, nl = 5)
+M_trunc <- pp_matrix(q = 4, d = 3, nl = 5, N = 48)
+
+M_full
+M_trunc
+
+diag(as.matrix(Matrix::tcrossprod(M_full)))
+diag(as.matrix(Matrix::tcrossprod(M_trunc)))
+```
+
+The full design has constant pool size on the diagonal. The truncated design
+changes the pool-overlap diagonal because the row sizes $n_j$ are no
+longer all equal.
+
+# A Separable/Disjunct Interpretation Example
+
+```{r diagnostics-sep-disj}
+M_disj <- DisjunctMatrix(N = 16L, d = 2L, method = "reed-solomon")
+M_disj
+
+sample_overlap_disj <- Matrix::crossprod(M_disj)
+sample_overlap_disj
+sample_overlap_disj[1:12, 1:12]
+```
+
+Reading the off-diagonal structure of $\mathbf{M}^\top\mathbf{M}$ helps
+explain why a design can separate or isolate individuals under bounded active
+set sizes.
+
+# End-To-End Workflow Example
+
+The diagnostics are not themselves part of the workflow layer, but they can be
+used to inspect a design before simulating outcomes and running a decoder.
+
+```{r diagnostics-workflow}
+M_workflow <- PoolMatrix(family = "pp", q = 4, d = 3, nl = 5, N = 64)
+M_workflow
+
+Y_tilde_workflow <- rep(0L, 64L)
+Y_tilde_workflow[c(2L, 13L)] <- 1L
+Y_tilde_workflow
+
+pool_overlap_workflow <- Matrix::tcrossprod(M_workflow)
+pool_overlap_workflow
+
+sample_overlap_workflow <- Matrix::crossprod(M_workflow)
+sample_overlap_workflow[1:12, 1:12]
+
+sim_workflow <- simulate_group_testing(M_workflow, Y_tilde_workflow)
+sim_workflow
+sim_workflow$z_tilde
+sim_workflow$z
+
+workflow_result <- run_testing_workflow(
+  design = M_workflow,
+  z = sim_workflow$z,
+  workflow = "non_adaptive",
+  decoder = "pp_decode",
+  decoder_args = list(verbose = FALSE),
+  stage2 = "none"
+)
+workflow_result
+workflow_result$stage1
+workflow_result$final_calls
+
+workflow_summary <- protocol_summary(workflow_result)
+workflow_summary
+```
+
+# References
+
+- Tan, Y. H. I. (2020). Pooling matrix designs for group testing. *SIAM
+  Undergraduate Research Online*, 13, 1-21.
+- Kautz, W. H., & Singleton, R. C. (1964). Nonrandom binary superimposed
+  codes. *IEEE Transactions on Information Theory*, 10(4), 363-377.

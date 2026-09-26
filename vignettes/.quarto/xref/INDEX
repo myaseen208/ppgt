@@ -1,0 +1,29 @@
+{
+  "ppgt_comparisons.qmd": {
+    "ppgt_comparisons.html": "99983925"
+  },
+  "ppgt_diagnostics.qmd": {
+    "ppgt_diagnostics.html": "d453428b"
+  },
+  "ppgt_galois_field.qmd": {
+    "ppgt_galois_field.html": "ee76a8d6"
+  },
+  "ppgt_hyper.qmd": {
+    "ppgt_hyper.html": "60a90d23"
+  },
+  "ppgt_hyperec.qmd": {
+    "ppgt_hyperec.html": "ef32cbca"
+  },
+  "ppgt_pbest.qmd": {
+    "ppgt_pbest.html": "4962dff0"
+  },
+  "ppgt_pp.qmd": {
+    "ppgt_pp.html": "5132e760"
+  },
+  "ppgt_separable_disjunct.qmd": {
+    "ppgt_separable_disjunct.html": "186dfa71"
+  },
+  "ppgt_theory.qmd": {
+    "ppgt_theory.html": "56610cf0"
+  }
+}

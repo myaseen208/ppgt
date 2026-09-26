@@ -1,0 +1,147 @@
+# ppgt: Pooled Group Testing Design Toolkit
+
+
+[![License:
+GPL-3](https://img.shields.io/badge/License-GPL--3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
+[![pkgdown](https://img.shields.io/badge/docs-pkgdown-blue.svg)](https://myaseen208.github.io/ppgt)
+
+## Overview
+
+**ppgt** is an R package for constructing, analyzing, and comparing
+pooled group testing designs. It brings together a set of classical and
+modern designs for research and experimentation, including polynomial
+pooling, PBEST, HYPER, Kirkman triple systems, other combinatorial
+designs (BIBDs, hypercubes, arrays, projective planes), and
+separable/disjunct constructions, together with finite-field (Galois
+field) utilities and COMP/GPSR decoders.
+
+## Installation
+
+`ppgt` is not yet on CRAN. Install the development version from GitHub:
+
+``` r
+# install.packages("pak")
+pak::pak("myaseen208/ppgt")
+
+# or with remotes
+# install.packages("remotes")
+remotes::install_github("myaseen208/ppgt")
+```
+
+## Quick start
+
+``` r
+library(ppgt)
+
+# Construct a Polynomial Pools (PP) matrix -- the standard PP-based
+# P-BEST configuration (q = 8, d = 3, nl = 6, N = 384)
+M <- pp_matrix(q = 8, d = 3, nl = 6, N = 384)
+dim(M)
+#> [1]  48 384
+
+# Simulate two positive individuals
+x_true <- rep(0L, 384)
+x_true[c(72, 142)] <- 1L
+
+# Generate pooled outcomes and decode
+z <- as.integer(as.vector(M %*% x_true) > 0)
+result <- pp_decode(M, z)
+#> 
+#> === PP Decode ===
+#> Matrix: 48 pools x 384 samples
+#> Positive pools: 11/48
+#> COMP candidates: 2
+#> Result: 72, 142
+#> Method: COMP (exact)
+result$positives
+#> [1]  72 142
+```
+
+## Kirkman triple system (KTS) helpers
+
+`kirkman_matrix(v)` constructs a resolvable Steiner triple system on `v`
+points – a Kirkman triple system exists exactly when `v %% 6 == 3`.
+Every returned matrix is independently re-verified with `is_kts()`
+before it is returned, checking all four properties that define a KTS:
+block size 3, correct block count, every pair of points covered exactly
+once, and resolvability into `(v-1)/2` parallel classes that each
+partition the points:
+
+``` r
+# v = 15 is the classic Kirkman schoolgirl problem
+M15 <- kirkman_matrix(15)
+dim(M15)                                  # 35 triples x 15 points
+#> [1] 35 15
+is_kts(M15)                               # verified: TRUE
+#> [1] TRUE
+#> attr(,"reasons")
+#> character(0)
+attr(M15, "design")$parallel_class        # which of the 7 "days" each triple is in
+#>  [1] 1 1 1 1 1 2 2 2 2 2 3 3 3 3 3 4 4 4 4 4 5 5 5 5 5 6 6 6 6 6 7 7 7 7 7
+```
+
+`v = 3`, `9`, and `15` construct quickly (a dedicated construction is
+used for `v = 15`, the classical solution built from the lines of
+PG(3,2)); other admissible `v` use a general randomized search that is
+not tuned for large `v` and may fail within its computational budget, in
+which case `kirkman_matrix()` raises an informative error rather than
+ever returning an unverified result.
+
+## Package contents
+
+### Core designs
+
+- `pp_matrix()` / `pp_decode()` / `pp_design()` / `pp_verify()` –
+  Polynomial Pools construction, decoding, and design search
+- `hyper_matrix()` / `HyperDesign()` – HYPER-style pooling matrices
+- `hyper_ec_matrix()` / `hyper_ec_decode()` – package-specific
+  experimental parity-augmented extension of HYPER
+- `tapestry_matrix()` – Tapestry-style pooling matrix
+- `SeparableMatrix()` / `DisjunctMatrix()` – d-separable / d-disjunct
+  constructions, self-verified against their defining properties
+- `dorfman_matrix()` / `dorfman_optimal_g()` – classic two-stage Dorfman
+  pooling
+- `array_matrix()` / `array_matrix_3d()` – row/column and 3D array
+  designs
+- `bibd_matrix()` – balanced incomplete block designs (built-in for
+  specific `(v, k, lambda)`)
+- `hypercube_matrix()` – d-dimensional hypercube designs
+- `kirkman_matrix()` / `is_kts()` – Kirkman triple systems, see above
+- `pg_matrix()` – projective plane PG(2, q) designs
+- `pbest_clinical_matrix()` – clinical 384-to-94 P-BEST heuristic layout
+- `regular_pooling_matrix()` / `score_pooling_matrix()` –
+  prescribed-marginal regular pooling matrices
+
+### Finite-field utilities
+
+- `gf()`, `gf_add()`, `gf_mult()`, `gf_pow()` – Galois field
+  construction and arithmetic
+- `is_prime()`, `is_prime_power()`
+
+### Workflow and comparison
+
+- `PoolMatrix()` – unified constructor across all design families
+- `simulate_group_testing()`, `run_testing_workflow()`,
+  `protocol_summary()`
+- `compare_designs()`, `list_designs()`, `compare_all_designs()`,
+  `compare_all_designs_honest()`
+
+## Documentation
+
+- Package reference: `pkgdown` site linked above
+- Notation registry: `ppgt_notations()`
+- Vignettes: `ppgt_theory` (overview), and topic articles `ppgt_pp`,
+  `ppgt_pbest`, `ppgt_hyper`, `ppgt_hyperec`, `ppgt_galois_field`,
+  `ppgt_separable_disjunct`, `ppgt_comparisons`, `ppgt_diagnostics`
+
+## License
+
+GPL-3
+
+## Author and citation
+
+Package author and maintainer: **Muhammad Yaseen**
+(<myaseen208@gmail.com>).
+
+    Yaseen, M. (2026). ppgt: Pooled Group Testing Design Toolkit.
+    R package version 0.1.1. https://github.com/myaseen208/ppgt

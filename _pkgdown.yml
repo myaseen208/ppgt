@@ -1,0 +1,113 @@
+url: https://myaseen208.github.io/ppgt
+title: Pooled Group Testing Design Toolkit
+
+template:
+  bootstrap: 5
+  bootswatch: flatly
+  math-rendering: mathjax
+  bslib:
+    base_font:
+      google: Crimson Pro
+    heading_font:
+      google: Crimson Pro
+    code_font:
+      google: JetBrains Mono
+    bg: "#ffffff"
+    fg: "#1a1a1a"
+    primary: "#2c5f8a"
+    link-color: "#2c5f8a"
+
+
+navbar:
+  structure:
+    left:  [home, reference, articles, news]
+    right: [search, github]
+  components:
+    github:
+      icon: fa-github
+      href: https://github.com/myaseen208/ppgt
+      aria-label: GitHub repository
+
+articles:
+  - title: Overview
+    contents:
+      - ppgt_theory
+  - title: Core Methods
+    contents:
+      - ppgt_galois_field
+      - ppgt_pp
+      - ppgt_pbest
+      - ppgt_hyper
+      - ppgt_hyperec
+      - ppgt_separable_disjunct
+      - ppgt_comparisons
+  - title: Diagnostics
+    contents:
+      - ppgt_diagnostics
+
+footer:
+  structure:
+    left: developed_by
+    right: built_with
+
+reference:
+  - title: Matrix Constructors
+    contents:
+      - ppgt-package
+      - PoolMatrix
+      - HyperDesign
+      - pp_matrix
+      - hyper_matrix
+      - hyper_ec_matrix
+      - SeparableMatrix
+      - DisjunctMatrix
+      - dorfman_matrix
+      - array_matrix
+      - array_matrix_3d
+      - bibd_matrix
+      - hypercube_matrix
+      - kirkman_matrix
+      - pg_matrix
+      - pbest_clinical_matrix
+      - tapestry_matrix
+      - additional_designs
+  - title: Decoding And Verification
+    contents:
+      - pp_comp
+      - pp_gpsr
+      - pp_decode
+      - pp_validate
+      - pp_verify
+      - hyper_ec_decode
+  - title: Workflow And Reporting
+    contents:
+      - simulate_group_testing
+      - run_testing_workflow
+      - protocol_summary
+      - compare_all_designs
+      - compare_all_designs_honest
+      - compare_designs
+      - list_designs
+      - dorfman_optimal_g
+  - title: Finite-Field Utilities
+    contents:
+      - gf
+      - gf_add
+      - gf_mult
+      - gf_pow
+      - is_prime
+      - is_prime_power
+      - print.galois_field
+  - title: Documentation Topics
+    contents:
+      - pp_design
+      - polynomial_pools
+      - decoding_algorithms
+      - galois_field_arithmetic
+      - ppgt_notations
+      - regular_pooling_matrix
+      - score_pooling_matrix
+
+search:
+  exclude:
+    - news/index.html

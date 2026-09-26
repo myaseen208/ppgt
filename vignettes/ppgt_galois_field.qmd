@@ -1,0 +1,140 @@
+---
+title: "GF(q) Arithmetic and Finite-Field Objects"
+author: "Muhammad Yaseen"
+date: last-modified
+format:
+  html:
+    self-contained: true
+    number-sections: true
+    toc: true
+    toc-depth: 3
+    highlight-style: github
+    code-fold: false
+    code-tools: true
+    html-math-method: mathjax
+vignette: >
+  %\VignetteIndexEntry{GF(q) Arithmetic and Finite-Field Objects}
+  %\VignetteEngine{quarto::html}
+  %\VignetteEncoding{UTF-8}
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = " ")
+if (requireNamespace("ppgt", quietly = TRUE)) {
+  library(ppgt)
+} else {
+  pkgload::load_all(export_all = FALSE, helpers = FALSE, quiet = TRUE)
+}
+```
+
+# Abstract
+
+The Polynomial Pools design family uses arithmetic in `GF(q)`, where `q` must
+be a prime power. This vignette covers the package finite-field utilities:
+`is_prime()`, `is_prime_power()`, `gf()`, `gf_add()`, `gf_mult()`, and
+`gf_pow()`.
+
+Let $q = p^n$, where $p$ is prime and $n \geq 1$. The package
+finite-field constructor builds a
+`galois_field` object encoding addition and multiplication in $GF(q)$.
+
+For prime fields, arithmetic is ordinary modular arithmetic. For extension
+fields, the package represents field elements by integer labels and uses lookup
+tables induced by an irreducible polynomial model. Those lookup tables are what
+the PP constructor ultimately uses when it evaluates polynomial relations over
+$\mathrm{GF}(q)$.
+
+# Prime And Prime-Power Checks
+
+```{r primality}
+is_prime(7)
+is_prime(9)
+
+pp8 <- is_prime_power(8)
+pp8
+
+pp10 <- is_prime_power(10)
+pp10
+```
+
+The PP construction requires $q = p^n$ for a prime $p$ and an integer
+$n \geq 1$.
+
+# Creating `GF(q)`
+
+```{r create-gf}
+gf7 <- gf(7)
+gf7
+
+gf8 <- gf(8)
+gf8
+```
+
+For `GF(7)`, the package uses modular arithmetic. For `GF(8)`, the package
+uses an extension-field construction compatible with the package's finite-field
+implementation choices for PP.
+
+# Supported Fields
+
+The exported `gf()` constructor supports:
+
+- all prime fields $GF(p)$
+- binary extensions through `GF(256)` for the implemented irreducible
+  polynomials
+- selected nonbinary extensions:
+  `GF(9)`, `GF(25)`, `GF(27)`, and `GF(49)`
+
+# Arithmetic Examples
+
+```{r arithmetic}
+gf_add(3, 5, gf7)
+gf_mult(3, 5, gf7)
+
+gf_add(5, 3, gf8)
+gf_mult(2, 4, gf8)
+gf_mult(5, 3, gf8)
+gf_pow(3, 7, gf8)
+```
+
+These operations are used inside `pp_matrix()` when the construction evaluates
+polynomials over `GF(q)`.
+
+# Lookup Tables
+
+The field objects also expose lookup tables. Printing a small slice is useful
+for understanding the representation.
+
+```{r lookup-tables}
+gf8$add[1:4, 1:4]
+gf8$mult[1:4, 1:4]
+```
+
+# Prime Field And Extension Field Contrast
+
+```{r prime-vs-extension}
+gf7$add[1:4, 1:4]
+gf7$mult[1:4, 1:4]
+
+gf9 <- gf(9)
+gf9
+gf9$add[1:4, 1:4]
+gf9$mult[1:4, 1:4]
+```
+
+# Relationship To Polynomial Pools
+
+In the PP construction, the matrix $\mathbf{M}$ is built by evaluating
+field-valued polynomial expressions and then converting those evaluations into
+binary pool assignments. The field arithmetic in this vignette is therefore the
+algebraic foundation for `pp_matrix()`.
+
+# References
+
+- Lidl, R., & Niederreiter, H. (1997). *Finite Fields* (2nd ed.). Cambridge
+  University Press.
+- Tan, Y. H. I. (2020). Pooling matrix designs for group testing. *SIAM
+  Undergraduate Research Online*, 13, 1-21.
