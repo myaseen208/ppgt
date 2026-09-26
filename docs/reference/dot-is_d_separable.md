@@ -84,28 +84,9 @@ M_dup <- cbind(c(1, 0, 1), c(1, 0, 1), c(0, 1, 0))
 stopifnot(isFALSE(ppgt:::.is_d_separable(M_dup, d = 1)))
 
 # P-BEST: N = 384 individuals, J = 48 pools (approximate for d = 3)
-# \dontrun{
+if (FALSE) { # \dontrun{
   M <- pp_matrix(q = 8, d = 3, nl = 6, N = 384)
   ppgt:::.is_d_separable(M, d = 2)   # exact
-#> [1] TRUE
-#> attr(,"d")
-#> [1] 2
-#> attr(,"n_pools")
-#> [1] 48
-#> attr(,"n_samples")
-#> [1] 384
-#> attr(,"verified")
-#> [1] "exact"
   ppgt:::.is_d_separable(M, d = 3)   # approximate (choose(384,3) >> 1e5)
-#> Warning: choose(384, 3) > 1e5: using Monte Carlo approximation (1e5 random subset pairs). attr(result, "verified") == "approximate".
-#> [1] TRUE
-#> attr(,"d")
-#> [1] 3
-#> attr(,"n_pools")
-#> [1] 48
-#> attr(,"n_samples")
-#> [1] 384
-#> attr(,"verified")
-#> [1] "approximate"
-# }
+} # }
 ```

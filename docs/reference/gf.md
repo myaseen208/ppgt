@@ -189,10 +189,7 @@ gf7$mult[4, 6]  # 3 x 5 = 15 mod 7 = 1
 #> [1] 1
 
 # Error: 6 is not a prime power
-# \dontrun{
+if (FALSE) { # \dontrun{
 gf6 <- gf(6)  # Error!
-#> Error in gf(6): q must be a prime power (2, 3, 4, 5, 7, 8, 9, 11, 13, 16, 25, 27, ...).
-#> Got q = 6 which is NOT a prime power.
-#> Hint: 6 = 2 x 3
-# }
+} # }
 ```

@@ -85,17 +85,8 @@ M_ones <- matrix(1L, nrow = 3, ncol = 4)
 stopifnot(isFALSE(ppgt:::.is_d_disjunct(M_ones, d = 1)))
 
 # 2-disjunct check on a small PP matrix
-# \dontrun{
+if (FALSE) { # \dontrun{
   M <- pp_matrix(q = 4, d = 3, nl = 5)   # 20 pools, 64 samples
   ppgt:::.is_d_disjunct(M, d = 2)        # exact (choose(64,2) = 2016)
-#> [1] FALSE
-#> attr(,"d")
-#> [1] 2
-#> attr(,"n_pools")
-#> [1] 20
-#> attr(,"n_samples")
-#> [1] 64
-#> attr(,"verified")
-#> [1] "exact"
-# }
+} # }
 ```
