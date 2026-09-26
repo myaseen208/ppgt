@@ -2,6 +2,66 @@
 format: gfm
 ---
 
+# ppgt 0.1.2 (2026-09-26)
+
+## New vignette
+
+- Added `ppgt_pp_188x282`, "Building a 188 x 282 pooling matrix": a worked
+  Polynomial Pools example (`pp_matrix(q = 47, d = 3, nl = 4, N = 282)`)
+  covering construction, verification (dimensions, row/column sums, the
+  pairwise-overlap bound), efficiency, and a `pp_decode()` example.
+
+## Kirkman triple system (KTS) helpers: new deterministic constructions
+
+- `kirkman_matrix()` now uses the affine geometry `AG(n,3)` construction for
+  every `v` that is an exact power of 3 (`v = 3, 9, 27, 81, ...`), not just
+  `v = 3` and `v = 9`. This is a direct, deterministic construction (no
+  randomized search), so `v = 27` and `v = 81` now join `v = 3`, `9`, and
+  `15` as fast, guaranteed constructions; `v = 9` also moved from the
+  general randomized search onto this same deterministic path.
+- `v = 21` and `v = 33` were investigated for a dedicated deterministic
+  construction (in the same spirit as `v = 15`'s PG(3,2) spread packing, and
+  a `PG(5,2)`-spread packing was attempted for `v = 63`). None was completed
+  within a reasonable computational budget in this round of work, and
+  empirically the existing general randomized search is not reliable for
+  `v = 21` either (it did not find a system within its budget in testing).
+  This is now documented explicitly in `?kirkman_matrix`: guaranteed-fast
+  `v` are powers of 3 and `v = 15`; all other admissible `v` use the general
+  search, which is not guaranteed to succeed.
+- Added tests for every fast-path `v` (`3, 9, 15, 27, 81`) and for the
+  internal dispatch helper; the general search itself is now also covered
+  directly (via a small, fast `v`) rather than only through the slow,
+  skip-gated end-to-end tests for `v = 21`/`v = 33`.
+
+## Bug fix: `compare_all_designs_honest()` reported hard-coded, sometimes-wrong efficiency comparisons
+
+`compare_all_designs_honest()`'s printed "PACKAGE-SPECIFIC SUMMARY" lines and
+its `Rank_Efficiency` columns were hard-coded rather than computed from the
+function's own tables, and had drifted out of sync with them -- e.g. it
+reported HYPER and Tapestry as "tied" at `N = 256` when their actual
+computed `m/N` differ (`0.172` vs `0.176`), and its `N = 384` ranking placed
+Tapestry above HYPER-EC even though HYPER-EC's computed ratio is lower
+(more efficient). `Rank_Efficiency` is now computed from the realized
+`m_over_N` column, and the printed narrative and returned `$summary` are
+derived from the same computation. Also switched this function from
+`cat()`/`print()` to `message()`, matching the rest of the package.
+
+## Other fixes
+
+- The `URL` field's `https://myaseen208.github.io/ppgt` link (and the same
+  link in `README`) redirected (301) to a custom domain that itself
+  404s, which both triggered an `R CMD check` NOTE and pointed users at a
+  dead page; the link has been removed rather than replaced with its
+  (broken) redirect target. The GitHub repository URL remains.
+- `.Rbuildignore` now also excludes `vignettes/.quarto` and
+  `vignettes/.Rhistory`, fixing an `R CMD check` NOTE about hidden files.
+
+## Contributors
+
+Added four contributors (`ctb`) to `Authors@R`: Christopher McMahan,
+Christopher Bilder, Joshua Tebbs, and Pranta Das. Muhammad Yaseen remains
+the sole author, maintainer, and copyright holder.
+
 # ppgt 0.1.1 (2026-09-26)
 
 ## Bug fix: Kirkman triple system (KTS) helpers did not satisfy the KTS defining properties

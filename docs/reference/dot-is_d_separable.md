@@ -73,20 +73,39 @@ disjunctive codes. *Problemy Peredachi Informatsii*, 18(3), 7-13.
 
 ``` r
 # Identity matrix: each individual i belongs to exactly one unique pool j.
-# Any two distinct active sets have disjoint pool memberships → always separable.
+# Any two distinct active sets have disjoint pool memberships, so it is always separable.
 I5 <- diag(5)
 res <- ppgt:::.is_d_separable(I5, d = 2)
 stopifnot(isTRUE(res), attr(res, "verified") == "exact")
 
 # Two identical columns (individuals with identical pool membership) are
-# indistinguishable → NOT 1-separable.
+# indistinguishable, so it is NOT 1-separable.
 M_dup <- cbind(c(1, 0, 1), c(1, 0, 1), c(0, 1, 0))
 stopifnot(isFALSE(ppgt:::.is_d_separable(M_dup, d = 1)))
 
 # P-BEST: N = 384 individuals, J = 48 pools (approximate for d = 3)
-if (FALSE) { # \dontrun{
+# \dontrun{
   M <- pp_matrix(q = 8, d = 3, nl = 6, N = 384)
   ppgt:::.is_d_separable(M, d = 2)   # exact
+#> [1] TRUE
+#> attr(,"d")
+#> [1] 2
+#> attr(,"n_pools")
+#> [1] 48
+#> attr(,"n_samples")
+#> [1] 384
+#> attr(,"verified")
+#> [1] "exact"
   ppgt:::.is_d_separable(M, d = 3)   # approximate (choose(384,3) >> 1e5)
-} # }
+#> Warning: choose(384, 3) > 1e5: using Monte Carlo approximation (1e5 random subset pairs). attr(result, "verified") == "approximate".
+#> [1] TRUE
+#> attr(,"d")
+#> [1] 3
+#> attr(,"n_pools")
+#> [1] 48
+#> attr(,"n_samples")
+#> [1] 384
+#> attr(,"verified")
+#> [1] "approximate"
+# }
 ```

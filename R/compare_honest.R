@@ -121,7 +121,7 @@ compare_all_designs_honest <- function() {
     ),
     Lambda_max = c(
       ifelse(!is.null(pbest_std), max(Matrix::colSums(pbest_std)), NA),
-      ifelse(!is.null(tapestry_std), 3, NA),
+      ifelse(!is.null(tapestry_std), max(Matrix::colSums(tapestry_std$matrix)), NA),
       ifelse(!is.null(hyper_std), max(Matrix::colSums(hyper_std)), NA),
       ifelse(!is.null(hyperec_std), hyperec_std$lambda_max, NA)
     ),
@@ -156,13 +156,16 @@ compare_all_designs_honest <- function() {
     ),
     Lambda_max = c(
       ifelse(!is.null(pbest_256), max(Matrix::colSums(pbest_256)), NA),
-      ifelse(!is.null(tapestry_256), 3, NA),
+      ifelse(!is.null(tapestry_256), max(Matrix::colSums(tapestry_256$matrix)), NA),
       ifelse(!is.null(hyper_256), max(Matrix::colSums(hyper_256)), NA),
       ifelse(!is.null(hyperec_256), hyperec_256$lambda_max, NA)
     ),
     Configuration = c("Sub-optimal", "Optimal", "Optimal", "Optimal"),
-    Rank_Efficiency = c(3, 1, 1, 4),  # Tied for 1st: HYPER & Tapestry
     stringsAsFactors = FALSE
+  )
+  n256_df$Rank_Efficiency <- rank(
+    ifelse(is.na(n256_df$m_over_N), Inf, n256_df$m_over_N),
+    ties.method = "min"
   )
   
   # =============================
@@ -192,52 +195,93 @@ compare_all_designs_honest <- function() {
     ),
     Lambda_max = c(
       ifelse(!is.null(pbest_384), max(Matrix::colSums(pbest_384)), NA),
-      ifelse(!is.null(tapestry_384), 3, NA),
+      ifelse(!is.null(tapestry_384), max(Matrix::colSums(tapestry_384$matrix)), NA),
       ifelse(!is.null(hyper_384), max(Matrix::colSums(hyper_384)), NA),
       ifelse(!is.null(hyperec_384), hyperec_384$lambda_max, NA)
     ),
     Configuration = c("Optimal", "Scaled", "Scaled", "Scaled"),
-    Rank_Efficiency = c(1, 2, 2, 4),  # P-BEST wins
     stringsAsFactors = FALSE
+  )
+  n384_df$Rank_Efficiency <- rank(
+    ifelse(is.na(n384_df$m_over_N), Inf, n384_df$m_over_N),
+    ties.method = "min"
   )
   
   message("\n========================================")
   message("COMPARISON COMPLETE")
   message("========================================\n")
-  
-  cat("\nTABLE 1: STANDARD CONFIGURATIONS\n")
-  cat("(Each design at its package reference N)\n")
-  cat("----------------------------------------\n")
-  print(standard_df)
-  
-  cat("\n\nTABLE 2: ALL DESIGNS AT N=256\n")
-  cat("(Fair to HYPER, Tapestry, HYPER-EC)\n")
-  cat("----------------------------------------\n")
-  print(n256_df)
-  cat("\nPACKAGE-SPECIFIC SUMMARY (efficiency): HYPER & Tapestry tied (m/N = 0.172)\n")
-  
-  cat("\n\nTABLE 3: ALL DESIGNS AT N=384\n")
-  cat("(Fair to P-BEST)\n")
-  cat("----------------------------------------\n")
-  print(n384_df)
-  cat("\nPACKAGE-SPECIFIC SUMMARY (efficiency): P-BEST (m/N = 0.125)\n")
-  
-  cat("\n\nPACKAGE-SPECIFIC FINDINGS:\n")
-  cat("============================================\n")
-  cat("1. Package-specific summary: P-BEST is most efficient at N=384 (0.125)\n")
-  cat("2. Package-specific summary: HYPER & Tapestry tie at N=256 (0.172)\n")
-  cat("3. Package-specific summary: HYPER-EC trades efficiency for error correction\n")
-  cat("4. Package-specific summary: different designs excel at different N\n\n")
-  
+
+  .print_df_as_message <- function(df) {
+    message(paste(utils::capture.output(print(df)), collapse = "\n"))
+  }
+
+  # Best (lowest m_over_N) design(s) at each common N, computed from the
+  # actual tables rather than hard-coded, so the printed narrative and the
+  # returned $summary always agree with $n256 / $n384.
+  .best_at <- function(df) {
+    best_ratio <- min(df$m_over_N, na.rm = TRUE)
+    winners <- df$Design[!is.na(df$m_over_N) & df$m_over_N == best_ratio]
+    list(
+      label = paste0(paste(winners, collapse = " & "),
+                      ifelse(length(winners) > 1L, " (tied)", "")),
+      ratio = best_ratio
+    )
+  }
+  best_256 <- .best_at(n256_df)
+  best_384 <- .best_at(n384_df)
+
+  lowest_lambda_idx <- which.min(n256_df$Lambda_max)
+  lowest_lambda_label <- sprintf(
+    "%s (lambda=%d)",
+    n256_df$Design[lowest_lambda_idx],
+    n256_df$Lambda_max[lowest_lambda_idx]
+  )
+
+  message("\nTABLE 1: STANDARD CONFIGURATIONS")
+  message("(Each design at its package reference N)")
+  message("----------------------------------------")
+  .print_df_as_message(standard_df)
+
+  message("\n\nTABLE 2: ALL DESIGNS AT N=256")
+  message("(Fair to HYPER, Tapestry, HYPER-EC)")
+  message("----------------------------------------")
+  .print_df_as_message(n256_df)
+  message(sprintf(
+    "\nPACKAGE-SPECIFIC SUMMARY (efficiency): %s (m/N = %.3f)",
+    best_256$label, best_256$ratio
+  ))
+
+  message("\n\nTABLE 3: ALL DESIGNS AT N=384")
+  message("(Fair to P-BEST)")
+  message("----------------------------------------")
+  .print_df_as_message(n384_df)
+  message(sprintf(
+    "\nPACKAGE-SPECIFIC SUMMARY (efficiency): %s (m/N = %.3f)",
+    best_384$label, best_384$ratio
+  ))
+
+  message("\n\nPACKAGE-SPECIFIC FINDINGS:")
+  message("============================================")
+  message(sprintf(
+    "1. Package-specific summary: %s most efficient at N=384 (%.3f)",
+    best_384$label, best_384$ratio
+  ))
+  message(sprintf(
+    "2. Package-specific summary: %s at N=256 (%.3f)",
+    best_256$label, best_256$ratio
+  ))
+  message("3. Package-specific summary: HYPER-EC trades efficiency for error correction")
+  message("4. Package-specific summary: different designs excel at different N\n")
+
   list(
     standard = standard_df,
     n256 = n256_df,
     n384 = n384_df,
     summary = list(
-      best_at_n256 = "HYPER & Tapestry (tied)",
-      best_at_n384 = "P-BEST",
+      best_at_n256 = best_256$label,
+      best_at_n384 = best_384$label,
       best_error_correction = "P-BEST (Strong RS)",
-      lowest_lambda = "HYPER (lambda=2)",
+      lowest_lambda = lowest_lambda_label,
       most_flexible = "HYPER, Tapestry, HYPER-EC"
     )
   )

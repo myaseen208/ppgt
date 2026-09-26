@@ -19,7 +19,7 @@ chosen reference configuration and at two common sample sizes."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">Pooled Group Testing Design Toolkit</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -150,48 +150,47 @@ Communications and Information Theory</em>, 15(3-4), 196-392.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ========================================</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> COMPARISON COMPLETE</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ========================================</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> TABLE 1: STANDARD CONFIGURATIONS</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (Each design at its package reference N)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ----------------------------------------</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     Design N_Standard  M m_over_N Lambda_max    Configuration</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   P-BEST        384 48    0.125          6 Standard (paper)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 Tapestry        256 45    0.176          3         Standard</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3    HYPER        256 44    0.172          2         Standard</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 HYPER-EC        256 56    0.219          3         Standard</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> TABLE 2: ALL DESIGNS AT N=256</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (Fair to HYPER, Tapestry, HYPER-EC)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ----------------------------------------</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     Design   N  M m_over_N Lambda_max Configuration Rank_Efficiency</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   P-BEST 256 48    0.188          6   Sub-optimal               3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 Tapestry 256 45    0.176          3       Optimal               1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3    HYPER 256 44    0.172          2       Optimal               1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 HYPER-EC 256 56    0.219          3       Optimal               4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> PACKAGE-SPECIFIC SUMMARY (efficiency): HYPER &amp; Tapestry tied (m/N = 0.172)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> TABLE 3: ALL DESIGNS AT N=384</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (Fair to P-BEST)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ----------------------------------------</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     Design   N  M m_over_N Lambda_max Configuration Rank_Efficiency</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   P-BEST 384 48    0.125          6       Optimal               1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 Tapestry 384 96    0.250          3        Scaled               2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3    HYPER 384 72    0.188          2        Scaled               2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 HYPER-EC 384 87    0.227          3        Scaled               4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> PACKAGE-SPECIFIC SUMMARY (efficiency): P-BEST (m/N = 0.125)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> PACKAGE-SPECIFIC FINDINGS:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ============================================</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1. Package-specific summary: P-BEST is most efficient at N=384 (0.125)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2. Package-specific summary: HYPER &amp; Tapestry tie at N=256 (0.172)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3. Package-specific summary: HYPER-EC trades efficiency for error correction</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4. Package-specific summary: different designs excel at different N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> TABLE 1: STANDARD CONFIGURATIONS</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> (Each design at its package reference N)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ----------------------------------------</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     Design N_Standard  M m_over_N Lambda_max    Configuration</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 1   P-BEST        384 48    0.125          6 Standard (paper)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2 Tapestry        256 45    0.176          3         Standard</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 3    HYPER        256 44    0.172          2         Standard</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 4 HYPER-EC        256 56    0.219          3         Standard</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> TABLE 2: ALL DESIGNS AT N=256</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> (Fair to HYPER, Tapestry, HYPER-EC)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ----------------------------------------</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     Design   N  M m_over_N Lambda_max Configuration Rank_Efficiency</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 1   P-BEST 256 48    0.188          6   Sub-optimal               3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2 Tapestry 256 45    0.176          3       Optimal               2</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 3    HYPER 256 44    0.172          2       Optimal               1</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 4 HYPER-EC 256 56    0.219          3       Optimal               4</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> PACKAGE-SPECIFIC SUMMARY (efficiency): HYPER (m/N = 0.172)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> TABLE 3: ALL DESIGNS AT N=384</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> (Fair to P-BEST)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ----------------------------------------</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     Design   N  M m_over_N Lambda_max Configuration Rank_Efficiency</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 1   P-BEST 384 48    0.125          6       Optimal               1</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2 Tapestry 384 96    0.250          3        Scaled               4</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 3    HYPER 384 72    0.188          2        Scaled               2</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 4 HYPER-EC 384 87    0.227          3        Scaled               3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> PACKAGE-SPECIFIC SUMMARY (efficiency): P-BEST (m/N = 0.125)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> PACKAGE-SPECIFIC FINDINGS:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ============================================</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 1. Package-specific summary: P-BEST most efficient at N=384 (0.125)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2. Package-specific summary: HYPER at N=256 (0.172)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 3. Package-specific summary: HYPER-EC trades efficiency for error correction</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 4. Package-specific summary: different designs excel at different N</span>
 <span class="r-in"><span><span class="va">comp</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $standard</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     Design N_Standard  M m_over_N Lambda_max    Configuration</span>
@@ -203,20 +202,20 @@ Communications and Information Theory</em>, 15(3-4), 196-392.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n256</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     Design   N  M m_over_N Lambda_max Configuration Rank_Efficiency</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1   P-BEST 256 48    0.188          6   Sub-optimal               3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 Tapestry 256 45    0.176          3       Optimal               1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 Tapestry 256 45    0.176          3       Optimal               2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3    HYPER 256 44    0.172          2       Optimal               1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4 HYPER-EC 256 56    0.219          3       Optimal               4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n384</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     Design   N  M m_over_N Lambda_max Configuration Rank_Efficiency</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1   P-BEST 384 48    0.125          6       Optimal               1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 Tapestry 384 96    0.250          3        Scaled               2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 Tapestry 384 96    0.250          3        Scaled               4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3    HYPER 384 72    0.188          2        Scaled               2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 HYPER-EC 384 87    0.227          3        Scaled               4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 HYPER-EC 384 87    0.227          3        Scaled               3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $summary</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $summary$best_at_n256</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "HYPER &amp; Tapestry (tied)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "HYPER"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $summary$best_at_n384</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "P-BEST"</span>
@@ -242,18 +241,18 @@ Communications and Information Theory</em>, 15(3-4), 196-392.</p>
 <span class="r-in"><span><span class="va">comp</span><span class="op">$</span><span class="va">n256</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     Design   N  M m_over_N Lambda_max Configuration Rank_Efficiency</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1   P-BEST 256 48    0.188          6   Sub-optimal               3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 Tapestry 256 45    0.176          3       Optimal               1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 Tapestry 256 45    0.176          3       Optimal               2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3    HYPER 256 44    0.172          2       Optimal               1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4 HYPER-EC 256 56    0.219          3       Optimal               4</span>
 <span class="r-in"><span><span class="va">comp</span><span class="op">$</span><span class="va">n384</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     Design   N  M m_over_N Lambda_max Configuration Rank_Efficiency</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1   P-BEST 384 48    0.125          6       Optimal               1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 Tapestry 384 96    0.250          3        Scaled               2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 Tapestry 384 96    0.250          3        Scaled               4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3    HYPER 384 72    0.188          2        Scaled               2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 HYPER-EC 384 87    0.227          3        Scaled               4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 HYPER-EC 384 87    0.227          3        Scaled               3</span>
 <span class="r-in"><span><span class="va">comp</span><span class="op">$</span><span class="va">summary</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $best_at_n256</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "HYPER &amp; Tapestry (tied)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "HYPER"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $best_at_n384</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "P-BEST"</span>

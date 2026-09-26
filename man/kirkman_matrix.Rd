@@ -43,12 +43,35 @@ sufficient existence condition is
 \deqn{v \equiv 3 \pmod 6, \quad v \geq 3.}
 }
 \section{Construction}{
-\eqn{v = 3} is the trivial system (one parallel class, one block). For
-\eqn{v = 15}, the construction packs the 35 lines of \eqn{\mathrm{PG}(3,2)}
-into 7 pairwise line-disjoint spreads (Colbourn & Dinitz, 2007, "Kirkman
-systems"), which is the classical solution to Kirkman's 1850 schoolgirl
-problem. For every other admissible \eqn{v} (including \eqn{v = 9}), the
-constructor uses a general randomized search: it generates a pool of
+Three dedicated, deterministic (non-search) constructions are used
+whenever \eqn{v} matches their pattern:
+\itemize{
+\item \eqn{v = 3^n} (\eqn{n = 1, 2, 3, 4, \ldots}, i.e. \eqn{v \in
+    \{3, 9, 27, 81, 243, \ldots\}}): the affine geometry
+\eqn{\mathrm{AG}(n,3)} construction. Points are the \eqn{3^n} vectors
+of \eqn{\mathrm{GF}(3)^n}. For each of the \eqn{(3^n-1)/2} canonical
+line directions \eqn{d} (nonzero vectors of \eqn{\mathrm{GF}(3)^n}
+taken up to the equivalence \eqn{d \sim -d}), the lines \eqn{\{p, p+d,
+    p+2d\}} for \eqn{p} ranging over \eqn{\mathrm{GF}(3)^n} partition all
+\eqn{3^n} points into \eqn{3^{n-1}} parallel lines, giving one
+parallel class per direction (Colbourn & Rosa, 1999, Section 3.3).
+This is the standard direct construction of a resolvable Steiner
+triple system from an affine space over \eqn{\mathrm{GF}(3)}; it
+covers \eqn{v = 3} (the trivial system) and \eqn{v = 9} as special
+cases, in addition to \eqn{v = 27} and \eqn{v = 81}.
+\item \eqn{v = 15}: the construction packs the 35 lines of
+\eqn{\mathrm{PG}(3,2)} into 7 pairwise line-disjoint spreads (Colbourn
+& Dinitz, 2007, "Kirkman systems"), the classical solution to
+Kirkman's 1850 schoolgirl problem.
+}
+For every other admissible \eqn{v} (e.g. \eqn{v = 21, 33, 39, \ldots}, and
+also \eqn{v = 63}, since no deterministic construction is currently
+implemented for it despite \eqn{63 = 2^6 - 1} suggesting a
+\eqn{\mathrm{PG}(5,2)}-spread approach analogous to \eqn{v = 15} --
+packing all 651 lines of \eqn{\mathrm{PG}(5,2)} into 31 disjoint spreads
+is a substantially harder combinatorial search than the \eqn{v = 15} case
+and was not solved within the current implementation), the constructor
+falls back to a general randomized search: it generates a pool of
 candidate parallel classes (uniformly random partitions of the \eqn{v}
 points into triples) and performs an exact-cover backtracking search for
 \eqn{(v-1)/2} of them that are pairwise pair-disjoint and jointly cover
@@ -57,14 +80,15 @@ is independently re-verified with \code{\link{is_kts}} before being
 returned; the function errors instead of ever returning an object that
 fails that check.
 
-This search-based general path is only run, and only tested in this
-package, for \eqn{v} up to a moderate size (through \eqn{v = 27} in the
-package's own test suite); it is not tuned for large \eqn{v}. If the
-search exhausts its attempt budget without finding a valid system -- a
-computational limitation of the current search, not evidence that no
-KTS(v) exists -- \code{kirkman_matrix()} stops with an informative error
-naming the values of \eqn{v} that are guaranteed fast (\eqn{v \in \{3, 9,
-15\}}).
+This search-based general fallback is empirically unreliable once
+\eqn{v} moves beyond the dedicated cases above: it is not guaranteed to
+find a system within its computational budget even for \eqn{v = 21}, and
+is not tuned for larger \eqn{v} such as 33 or 63. This is a limitation of
+the current search heuristic, not evidence that a KTS fails to exist --
+by Ray-Chaudhuri & Wilson (1971), KTS(v) exists for every \eqn{v \equiv 3
+\pmod 6}. If the search exhausts its attempt budget, \code{kirkman_matrix()}
+stops with an informative error naming the values of \eqn{v} that are
+guaranteed fast: any power of 3 (\eqn{3, 9, 27, 81, \ldots}), and 15.
 }
 
 \examples{
@@ -78,6 +102,10 @@ is_kts(M9)
 M15 <- kirkman_matrix(15)
 is_kts(M15)
 attr(M15, "design")$parallel_class
+
+# v = 27 and v = 81: AG(n,3), also fast and deterministic
+is_kts(kirkman_matrix(27))
+is_kts(kirkman_matrix(81))
 
 # Invalid v (not == 3 mod 6) is an error, not a silent NULL/warning
 tryCatch(kirkman_matrix(10), error = function(e) conditionMessage(e))

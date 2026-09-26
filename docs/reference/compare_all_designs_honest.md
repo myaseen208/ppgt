@@ -129,11 +129,11 @@ comp <- compare_all_designs_honest()
 #> ----------------------------------------
 #>     Design   N  M m_over_N Lambda_max Configuration Rank_Efficiency
 #> 1   P-BEST 256 48    0.188          6   Sub-optimal               3
-#> 2 Tapestry 256 45    0.176          3       Optimal               1
+#> 2 Tapestry 256 45    0.176          3       Optimal               2
 #> 3    HYPER 256 44    0.172          2       Optimal               1
 #> 4 HYPER-EC 256 56    0.219          3       Optimal               4
 #> 
-#> PACKAGE-SPECIFIC SUMMARY (efficiency): HYPER & Tapestry tied (m/N = 0.172)
+#> PACKAGE-SPECIFIC SUMMARY (efficiency): HYPER (m/N = 0.172)
 #> 
 #> 
 #> TABLE 3: ALL DESIGNS AT N=384
@@ -141,20 +141,19 @@ comp <- compare_all_designs_honest()
 #> ----------------------------------------
 #>     Design   N  M m_over_N Lambda_max Configuration Rank_Efficiency
 #> 1   P-BEST 384 48    0.125          6       Optimal               1
-#> 2 Tapestry 384 96    0.250          3        Scaled               2
+#> 2 Tapestry 384 96    0.250          3        Scaled               4
 #> 3    HYPER 384 72    0.188          2        Scaled               2
-#> 4 HYPER-EC 384 87    0.227          3        Scaled               4
+#> 4 HYPER-EC 384 87    0.227          3        Scaled               3
 #> 
 #> PACKAGE-SPECIFIC SUMMARY (efficiency): P-BEST (m/N = 0.125)
 #> 
 #> 
 #> PACKAGE-SPECIFIC FINDINGS:
 #> ============================================
-#> 1. Package-specific summary: P-BEST is most efficient at N=384 (0.125)
-#> 2. Package-specific summary: HYPER & Tapestry tie at N=256 (0.172)
+#> 1. Package-specific summary: P-BEST most efficient at N=384 (0.125)
+#> 2. Package-specific summary: HYPER at N=256 (0.172)
 #> 3. Package-specific summary: HYPER-EC trades efficiency for error correction
 #> 4. Package-specific summary: different designs excel at different N
-#> 
 comp
 #> $standard
 #>     Design N_Standard  M m_over_N Lambda_max    Configuration
@@ -166,20 +165,20 @@ comp
 #> $n256
 #>     Design   N  M m_over_N Lambda_max Configuration Rank_Efficiency
 #> 1   P-BEST 256 48    0.188          6   Sub-optimal               3
-#> 2 Tapestry 256 45    0.176          3       Optimal               1
+#> 2 Tapestry 256 45    0.176          3       Optimal               2
 #> 3    HYPER 256 44    0.172          2       Optimal               1
 #> 4 HYPER-EC 256 56    0.219          3       Optimal               4
 #> 
 #> $n384
 #>     Design   N  M m_over_N Lambda_max Configuration Rank_Efficiency
 #> 1   P-BEST 384 48    0.125          6       Optimal               1
-#> 2 Tapestry 384 96    0.250          3        Scaled               2
+#> 2 Tapestry 384 96    0.250          3        Scaled               4
 #> 3    HYPER 384 72    0.188          2        Scaled               2
-#> 4 HYPER-EC 384 87    0.227          3        Scaled               4
+#> 4 HYPER-EC 384 87    0.227          3        Scaled               3
 #> 
 #> $summary
 #> $summary$best_at_n256
-#> [1] "HYPER & Tapestry (tied)"
+#> [1] "HYPER"
 #> 
 #> $summary$best_at_n384
 #> [1] "P-BEST"
@@ -205,18 +204,18 @@ comp$standard
 comp$n256
 #>     Design   N  M m_over_N Lambda_max Configuration Rank_Efficiency
 #> 1   P-BEST 256 48    0.188          6   Sub-optimal               3
-#> 2 Tapestry 256 45    0.176          3       Optimal               1
+#> 2 Tapestry 256 45    0.176          3       Optimal               2
 #> 3    HYPER 256 44    0.172          2       Optimal               1
 #> 4 HYPER-EC 256 56    0.219          3       Optimal               4
 comp$n384
 #>     Design   N  M m_over_N Lambda_max Configuration Rank_Efficiency
 #> 1   P-BEST 384 48    0.125          6       Optimal               1
-#> 2 Tapestry 384 96    0.250          3        Scaled               2
+#> 2 Tapestry 384 96    0.250          3        Scaled               4
 #> 3    HYPER 384 72    0.188          2        Scaled               2
-#> 4 HYPER-EC 384 87    0.227          3        Scaled               4
+#> 4 HYPER-EC 384 87    0.227          3        Scaled               3
 comp$summary
 #> $best_at_n256
-#> [1] "HYPER & Tapestry (tied)"
+#> [1] "HYPER"
 #> 
 #> $best_at_n384
 #> [1] "P-BEST"

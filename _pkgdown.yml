@@ -44,6 +44,9 @@ articles:
   - title: Diagnostics
     contents:
       - ppgt_diagnostics
+  - title: Examples
+    contents:
+      - ppgt_pp_188x282
 
 footer:
   structure:
@@ -98,6 +101,7 @@ reference:
       - is_prime
       - is_prime_power
       - print.galois_field
+      - is_kts
   - title: Documentation Topics
     contents:
       - pp_design

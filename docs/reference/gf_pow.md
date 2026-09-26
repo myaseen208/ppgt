@@ -14,7 +14,7 @@ gf_pow(a, n, gf)
 - a:
 
   Integer scalar representing the base field element. It must lie in
-  \\\\0,1,\ldots,q-1\\\\, where \\q = gf\$q\\.
+  \\\\0,1,\ldots,q-1\\\\, where `q = gf$q`.
 
 - n:
 

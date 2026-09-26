@@ -11,7 +11,6 @@ knitr::opts_chunk$set(
 ```
 
 [![License: GPL-3](https://img.shields.io/badge/License-GPL--3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
-[![pkgdown](https://img.shields.io/badge/docs-pkgdown-blue.svg)](https://myaseen208.github.io/ppgt)
 
 ## Overview
 
@@ -73,12 +72,13 @@ is_kts(M15)                               # verified: TRUE
 attr(M15, "design")$parallel_class        # which of the 7 "days" each triple is in
 ```
 
-`v = 3`, `9`, and `15` construct quickly (a dedicated construction is used
-for `v = 15`, the classical solution built from the lines of PG(3,2)); other
-admissible `v` use a general randomized search that is not tuned for large
-`v` and may fail within its computational budget, in which case
-`kirkman_matrix()` raises an informative error rather than ever returning an
-unverified result.
+Any `v` that is a power of 3 (`3, 9, 27, 81, ...`, via the affine geometry
+AG(n,3)) and `v = 15` (the classical solution built from the lines of
+PG(3,2)) construct quickly and deterministically. Other admissible `v`
+(e.g. `21`, `33`, `63`) fall back to a general randomized search that is not
+tuned for larger `v` -- it is not guaranteed to succeed even for `v = 21` --
+in which case `kirkman_matrix()` raises an informative error rather than
+ever returning an unverified result.
 
 ## Package contents
 
@@ -119,10 +119,11 @@ unverified result.
 
 ## Documentation
 
-- Package reference: `pkgdown` site linked above
+- Package reference: [github.com/myaseen208/ppgt](https://github.com/myaseen208/ppgt)
 - Notation registry: `ppgt_notations()`
 - Vignettes: `ppgt_theory` (overview), and topic articles `ppgt_pp`,
-  `ppgt_pbest`, `ppgt_hyper`, `ppgt_hyperec`, `ppgt_galois_field`,
+  `ppgt_pp_188x282` (worked 188 x 282 pooling matrix example), `ppgt_pbest`,
+  `ppgt_hyper`, `ppgt_hyperec`, `ppgt_galois_field`,
   `ppgt_separable_disjunct`, `ppgt_comparisons`, `ppgt_diagnostics`
 
 ## License
@@ -134,7 +135,10 @@ GPL-3
 Package author and maintainer: **Muhammad Yaseen**
 (<myaseen208@gmail.com>).
 
+Contributors: Christopher McMahan, Christopher Bilder, Joshua Tebbs, and
+Pranta Das.
+
 ```
 Yaseen, M. (2026). ppgt: Pooled Group Testing Design Toolkit.
-R package version 0.1.1. https://github.com/myaseen208/ppgt
+R package version 0.1.2. https://github.com/myaseen208/ppgt
 ```

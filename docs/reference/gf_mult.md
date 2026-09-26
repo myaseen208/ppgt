@@ -14,12 +14,12 @@ gf_mult(a, b, gf)
 - a:
 
   Integer scalar representing the first field element. It must lie in
-  \\\\0,1,\ldots,q-1\\\\, where \\q = gf\$q\\.
+  \\\\0,1,\ldots,q-1\\\\, where `q = gf$q`.
 
 - b:
 
   Integer scalar representing the second field element. It must lie in
-  \\\\0,1,\ldots,q-1\\\\, where \\q = gf\$q\\.
+  \\\\0,1,\ldots,q-1\\\\, where `q = gf$q`.
 
 - gf:
 

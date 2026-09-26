@@ -13,7 +13,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">Pooled Group Testing Design Toolkit</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -40,10 +40,82 @@
     </div>
 
     <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.1.2" id="ppgt-012-2026-09-26">ppgt 0.1.2 (2026-09-26)<a class="anchor" aria-label="anchor" href="#ppgt-012-2026-09-26"></a></h2>
+<div class="section level3">
+<h3 id="new-vignette-0-1-2">New vignette<a class="anchor" aria-label="anchor" href="#new-vignette-0-1-2"></a></h3>
+<ul><li>Added <code>ppgt_pp_188x282</code>, “Building a 188 x 282 pooling matrix”: a worked Polynomial Pools example (<code>pp_matrix(q = 47, d = 3, nl = 4, N = 282)</code>) covering construction, verification (dimensions, row/column sums, the pairwise-overlap bound), efficiency, and a <code><a href="../reference/pp_decode.html">pp_decode()</a></code> example.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="kirkman-triple-system-kts-helpers-new-deterministic-constructions-0-1-2">Kirkman triple system (KTS) helpers: new deterministic constructions<a class="anchor" aria-label="anchor" href="#kirkman-triple-system-kts-helpers-new-deterministic-constructions-0-1-2"></a></h3>
+<ul><li>
+<code><a href="../reference/kirkman_matrix.html">kirkman_matrix()</a></code> now uses the affine geometry <code>AG(n,3)</code> construction for every <code>v</code> that is an exact power of 3 (<code>v = 3, 9, 27, 81, ...</code>), not just <code>v = 3</code> and <code>v = 9</code>. This is a direct, deterministic construction (no randomized search), so <code>v = 27</code> and <code>v = 81</code> now join <code>v = 3</code>, <code>9</code>, and <code>15</code> as fast, guaranteed constructions; <code>v = 9</code> also moved from the general randomized search onto this same deterministic path.</li>
+<li>
+<code>v = 21</code> and <code>v = 33</code> were investigated for a dedicated deterministic construction (in the same spirit as <code>v = 15</code>’s PG(3,2) spread packing, and a <code>PG(5,2)</code>-spread packing was attempted for <code>v = 63</code>). None was completed within a reasonable computational budget in this round of work, and empirically the existing general randomized search is not reliable for <code>v = 21</code> either (it did not find a system within its budget in testing). This is now documented explicitly in <code><a href="../reference/kirkman_matrix.html">?kirkman_matrix</a></code>: guaranteed-fast <code>v</code> are powers of 3 and <code>v = 15</code>; all other admissible <code>v</code> use the general search, which is not guaranteed to succeed.</li>
+<li>Added tests for every fast-path <code>v</code> (<code>3, 9, 15, 27, 81</code>) and for the internal dispatch helper; the general search itself is now also covered directly (via a small, fast <code>v</code>) rather than only through the slow, skip-gated end-to-end tests for <code>v = 21</code>/<code>v = 33</code>.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="bug-fix-compare_all_designs_honest-reported-hard-coded-sometimes-wrong-efficiency-comparisons-0-1-2">Bug fix: <code>compare_all_designs_honest()</code> reported hard-coded, sometimes-wrong efficiency comparisons<a class="anchor" aria-label="anchor" href="#bug-fix-compare_all_designs_honest-reported-hard-coded-sometimes-wrong-efficiency-comparisons-0-1-2"></a></h3>
+<p><code><a href="../reference/compare_all_designs_honest.html">compare_all_designs_honest()</a></code>’s printed “PACKAGE-SPECIFIC SUMMARY” lines and its <code>Rank_Efficiency</code> columns were hard-coded rather than computed from the function’s own tables, and had drifted out of sync with them – e.g. it reported HYPER and Tapestry as “tied” at <code>N = 256</code> when their actual computed <code>m/N</code> differ (<code>0.172</code> vs <code>0.176</code>), and its <code>N = 384</code> ranking placed Tapestry above HYPER-EC even though HYPER-EC’s computed ratio is lower (more efficient). <code>Rank_Efficiency</code> is now computed from the realized <code>m_over_N</code> column, and the printed narrative and returned <code>$summary</code> are derived from the same computation. Also switched this function from <code><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat()</a></code>/<code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code> to <code><a href="https://rdrr.io/r/base/message.html" class="external-link">message()</a></code>, matching the rest of the package.</p>
+</div>
+<div class="section level3">
+<h3 id="other-fixes-0-1-2">Other fixes<a class="anchor" aria-label="anchor" href="#other-fixes-0-1-2"></a></h3>
+<ul><li>The <code>URL</code> field’s <code>https://myaseen208.github.io/ppgt</code> link (and the same link in <code>README</code>) redirected (301) to a custom domain that itself 404s, which both triggered an <code>R CMD check</code> NOTE and pointed users at a dead page; the link has been removed rather than replaced with its (broken) redirect target. The GitHub repository URL remains.</li>
+<li>
+<code>.Rbuildignore</code> now also excludes <code>vignettes/.quarto</code> and <code>vignettes/.Rhistory</code>, fixing an <code>R CMD check</code> NOTE about hidden files.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="contributors-0-1-2">Contributors<a class="anchor" aria-label="anchor" href="#contributors-0-1-2"></a></h3>
+<p>Added four contributors (<code>ctb</code>) to <code>Authors@R</code>: Christopher McMahan, Christopher Bilder, Joshua Tebbs, and Pranta Das. Muhammad Yaseen remains the sole author, maintainer, and copyright holder.</p>
+</div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.1.1" id="ppgt-011-2026-09-26">ppgt 0.1.1 (2026-09-26)<a class="anchor" aria-label="anchor" href="#ppgt-011-2026-09-26"></a></h2>
+<div class="section level3">
+<h3 id="bug-fix-kirkman-triple-system-kts-helpers-did-not-satisfy-the-kts-defining-properties-0-1-1">Bug fix: Kirkman triple system (KTS) helpers did not satisfy the KTS defining properties<a class="anchor" aria-label="anchor" href="#bug-fix-kirkman-triple-system-kts-helpers-did-not-satisfy-the-kts-defining-properties-0-1-1"></a></h3>
+<p>A reviewer reported that <code><a href="../reference/kirkman_matrix.html">kirkman_matrix()</a></code> did not produce genuine Kirkman triple systems for some <code>v</code>. Investigation confirmed and precisely quantified the problem:</p>
+<ul><li>
+<code>kirkman_matrix(15)</code> used a hand-written block set whose last three “parallel classes” were not valid partitions of the 15 points: 19 pairs of points were covered by more than one block and 24 pairs were never covered at all (out of the 105 pairs a KTS(15) must cover exactly once). Verified against an independently constructed and checked reference KTS(15) (a packing of the 35 lines of PG(3,2) into 7 spreads).</li>
+<li>
+<code>kirkman_matrix(21)</code> used an internal helper that generated only 7 of the 70 blocks a KTS(21) requires – an incomplete construction, not a numerical error, that silently returned a badly undersized system.</li>
+<li>
+<code>kirkman_matrix(3)</code> was rejected outright, even though <code>v = 3</code> is the trivial (one block, one parallel class) Kirkman triple system.</li>
+<li>Invalid <code>v</code> (not <code>== 3 mod 6</code>) returned <code>NULL</code> with a <code><a href="https://rdrr.io/r/base/warning.html" class="external-link">warning()</a></code> instead of failing, so a caller that didn’t check for <code>NULL</code> could silently propagate a missing design.</li>
+</ul><div class="section level4">
+<h4 id="what-changed-0-1-1">What changed<a class="anchor" aria-label="anchor" href="#what-changed-0-1-1"></a></h4>
+<ul><li>
+<code><a href="../reference/kirkman_matrix.html">kirkman_matrix()</a></code> was rewritten around a general, uniform construction rather than per-<code>v</code> lookup tables: a dedicated, verified construction for <code>v = 15</code> (packing the lines of PG(3,2) into spreads – the classical solution to Kirkman’s schoolgirl problem), and a general randomized candidate-pool exact-cover search for every other admissible <code>v</code> (including <code>v = 3</code> and <code>v = 9</code>, which construct in well under a second). Every result is independently re-verified before being returned; the function errors rather than ever returning an unverified or invalid system.</li>
+<li>Invalid <code>v</code> (not an integer <code>&gt;= 3</code>, or not <code>== 3 mod 6</code>) now raises an informative <code><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop()</a></code> instead of a <code><a href="https://rdrr.io/r/base/warning.html" class="external-link">warning()</a></code> + <code>NULL</code>.</li>
+<li>For <code>v</code> where the general search does not find a system within its computational budget (currently only guaranteed fast for <code>v</code> in <code>{3, 9, 15}</code>), <code><a href="../reference/kirkman_matrix.html">kirkman_matrix()</a></code> raises an informative error explaining this is a search-budget limitation, not evidence that no KTS exists for that <code>v</code>.</li>
+<li>New exported validator <code><a href="../reference/is_kts.html">is_kts()</a></code> independently checks all four defining KTS properties (block size 3, correct block count, every pair of points covered exactly once, and resolvability into parallel classes that each partition the points) directly against a candidate incidence matrix. Used throughout the package’s own tests, and available for users to verify any KTS-shaped matrix themselves.</li>
+<li>
+<code><a href="../reference/kirkman_matrix.html">kirkman_matrix()</a></code>’s returned <code>design</code> attribute now includes <code>parallel_class</code>, the resolution-class label of each block, so resolvability can be checked (by <code><a href="../reference/is_kts.html">is_kts()</a></code> or by users) directly from the returned object.</li>
+</ul></div>
+<div class="section level4">
+<h4 id="who-was-affected-0-1-1">Who was affected<a class="anchor" aria-label="anchor" href="#who-was-affected-0-1-1"></a></h4>
+<p>Only <code><a href="../reference/kirkman_matrix.html">kirkman_matrix()</a></code> itself, and only for <code>v = 3</code>, <code>v = 21</code>, and invalid <code>v</code>; <code>kirkman_matrix(9)</code> was already correct and is unaffected. No other exported function calls <code><a href="../reference/kirkman_matrix.html">kirkman_matrix()</a></code> with <code>v</code> other than <code>9</code> (<code>PoolMatrix(family = "kirkman")</code> and its tests all use <code>v = 9</code>), so no other function, vignette, or previously published result was affected by this bug.</p>
+</div>
+</div>
+<div class="section level3">
+<h3 id="other-fixes-rng-state-leaked-to-the-caller-0-1-1">Other fixes: RNG state leaked to the caller<a class="anchor" aria-label="anchor" href="#other-fixes-rng-state-leaked-to-the-caller-0-1-1"></a></h3>
+<p>Four functions called <code><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed()</a></code> internally without saving and restoring the caller’s prior random-number generator state, so calling them could silently perturb any subsequent random draws elsewhere in a user’s session or script:</p>
+<ul><li>
+<code><a href="../reference/SeparableMatrix.html">SeparableMatrix()</a></code> and <code><a href="../reference/DisjunctMatrix.html">DisjunctMatrix()</a></code> (<code>method = "random"</code> path)</li>
+<li>
+<code><a href="../reference/simulate_group_testing.html">simulate_group_testing()</a></code> (when <code>seed</code> is supplied)</li>
+<li><code><a href="../reference/pbest_clinical_matrix.html">pbest_clinical_matrix()</a></code></li>
+</ul><p>All four now save the caller’s <code>.Random.seed</code> before seeding and restore it on exit, matching the pattern already used correctly by <code><a href="../reference/regular_pooling_matrix.html">regular_pooling_matrix()</a></code>. Output for a given <code>seed</code> is unchanged; only the side effect on the caller’s RNG stream is fixed.</p>
+</div>
+<div class="section level3">
+<h3 id="documentation-0-1-1">Documentation<a class="anchor" aria-label="anchor" href="#documentation-0-1-1"></a></h3>
+<ul><li>
+<code>README.qmd</code> and <code>NEWS.qmd</code> were filled in for the first time (previously placeholder files).</li>
+</ul><hr></div>
+</div>
+    <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.0" id="ppgt-010-2026-04-22">ppgt 0.1.0 (2026-04-22)<a class="anchor" aria-label="anchor" href="#ppgt-010-2026-04-22"></a></h2>
 <div class="section level3">
 <h3 id="initial-stable-release-0-1-0">Initial stable release<a class="anchor" aria-label="anchor" href="#initial-stable-release-0-1-0"></a></h3>
-<p>This version represents the first stable, internally verified release of <strong>ppgt</strong> following a full end-to-end validation workflow (Sessions A–H).</p>
+<p>This version represents the first stable, internally verified release of <strong>ppgt</strong> following a full end-to-end validation workflow (Sessions A-H).</p>
 </div>
 <div class="section level3">
 <h3 id="core-functionality-0-1-0">Core functionality<a class="anchor" aria-label="anchor" href="#core-functionality-0-1-0"></a></h3>

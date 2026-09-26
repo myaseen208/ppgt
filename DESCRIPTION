@@ -1,8 +1,13 @@
 Package: ppgt
 Type: Package
 Title: Pooled Group Testing Design Toolkit
-Version: 0.1.1
-Authors@R: person("Muhammad", "Yaseen", email = "myaseen208@gmail.com", role = c("aut", "cre", "cph"))
+Version: 0.1.2
+Authors@R: c(
+    person("Muhammad", "Yaseen", email = "myaseen208@gmail.com", role = c("aut", "cre", "cph")),
+    person("Christopher", "McMahan", role = "ctb", comment = c(ORCID = "0000-0001-5056-9615")),
+    person("Christopher", "Bilder",  role = "ctb", comment = c(ORCID = "0000-0002-2848-8576")),
+    person("Joshua",      "Tebbs",   role = "ctb", comment = c(ORCID = "0000-0002-6762-7241")),
+    person("Pranta",      "Das",     role = "ctb"))
 Description: Provides tools for constructing, analyzing, and comparing 
     pooled group testing designs. Includes implementations of polynomial 
     pooling, PBEST, HYPER, separable and disjunct matrices, and finite-field 
@@ -18,7 +23,6 @@ Suggests: covr, devtools, knitr, pkgdown, pkgload, quarto, rmarkdown,
 Config/testthat/edition: 3
 VignetteBuilder: quarto
 Roxygen: list(markdown = TRUE)
-URL: https://github.com/myaseen208/ppgt,
-    https://myaseen208.github.io/ppgt
+URL: https://github.com/myaseen208/ppgt
 BugReports: https://github.com/myaseen208/ppgt/issues
 Config/roxygen2/version: 8.1.0

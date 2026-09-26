@@ -8,3 +8,5 @@
 ^README_files$
 ^NEWS_files$
 ^\.quarto$
+^vignettes/\.quarto$
+^vignettes/\.Rhistory$

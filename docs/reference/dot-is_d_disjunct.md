@@ -80,13 +80,22 @@ res <- ppgt:::.is_d_disjunct(I5, d = 1)
 stopifnot(isTRUE(res), attr(res, "verified") == "exact")
 
 # A matrix of all ones is NOT 1-disjunct:
-# for any column c and set S = {s}, support(c) = all rows ⊆ support(s).
+# for any column c and set S = {s}, support(c) = all rows is a subset of support(s).
 M_ones <- matrix(1L, nrow = 3, ncol = 4)
 stopifnot(isFALSE(ppgt:::.is_d_disjunct(M_ones, d = 1)))
 
 # 2-disjunct check on a small PP matrix
-if (FALSE) { # \dontrun{
+# \dontrun{
   M <- pp_matrix(q = 4, d = 3, nl = 5)   # 20 pools, 64 samples
   ppgt:::.is_d_disjunct(M, d = 2)        # exact (choose(64,2) = 2016)
-} # }
+#> [1] FALSE
+#> attr(,"d")
+#> [1] 2
+#> attr(,"n_pools")
+#> [1] 20
+#> attr(,"n_samples")
+#> [1] 64
+#> attr(,"verified")
+#> [1] "exact"
+# }
 ```

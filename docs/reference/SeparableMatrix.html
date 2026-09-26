@@ -27,7 +27,7 @@ design, and a Reed-Solomon-style construction over \(GF(q)\)."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">Pooled Group Testing Design Toolkit</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -151,7 +151,7 @@ $$
 $$</p>
     </div>
     <div class="section level2">
-    <h2 id="reed-solomon-construction-lpr-xxa-tn-y-t-txvkwg-tagq-elb-">Reed-Solomon Construction (9LPR5XxA8tN6Y6t3TXvKwG01TAgq7elb-13-)<a class="anchor" aria-label="anchor" href="#reed-solomon-construction-lpr-xxa-tn-y-t-txvkwg-tagq-elb-"></a></h2>
+    <h2 id="reed-solomon-construction-u-rjofwuv-ska-xzahgor-zkezdct-u-">Reed-Solomon Construction (u6RjOFwuV3SkA1xZAhGOR37ZkEzDct6U-13-)<a class="anchor" aria-label="anchor" href="#reed-solomon-construction-u-rjofwuv-ska-xzahgor-zkezdct-u-"></a></h2>
     <p>Let \(q\) be the smallest prime power for which there exists an integer
 \(k \geq 1\) such that \(q^k \geq N\) and
 \(L = d(k-1)+1 \leq q+1\). Associate individual \(i\) with the
@@ -182,7 +182,7 @@ ignored for this method because \(J\) is fixed by \(q\), \(k\), and
 \(d\).</p>
     </div>
     <div class="section level2">
-    <h2 id="random-bernoulli-construction-lpr-xxa-tn-y-t-txvkwg-tagq-elb-">Random Bernoulli Construction (9LPR5XxA8tN6Y6t3TXvKwG01TAgq7elb-40-)<a class="anchor" aria-label="anchor" href="#random-bernoulli-construction-lpr-xxa-tn-y-t-txvkwg-tagq-elb-"></a></h2>
+    <h2 id="random-bernoulli-construction-u-rjofwuv-ska-xzahgor-zkezdct-u-">Random Bernoulli Construction (u6RjOFwuV3SkA1xZAhGOR37ZkEzDct6U-40-)<a class="anchor" aria-label="anchor" href="#random-bernoulli-construction-u-rjofwuv-ska-xzahgor-zkezdct-u-"></a></h2>
     <p>If the requested number of pools is not supplied, use the theoretical lower
 bound
 $$
@@ -198,7 +198,7 @@ Up to 10 seeds are tried until <code>.is_d_separable</code> returns <code>TRUE</
 or the retry budget is exhausted.</p>
     </div>
     <div class="section level2">
-    <h2 id="automatic-selection-lpr-xxa-tn-y-t-txvkwg-tagq-elb-">Automatic Selection (9LPR5XxA8tN6Y6t3TXvKwG01TAgq7elb-45-)<a class="anchor" aria-label="anchor" href="#automatic-selection-lpr-xxa-tn-y-t-txvkwg-tagq-elb-"></a></h2>
+    <h2 id="automatic-selection-u-rjofwuv-ska-xzahgor-zkezdct-u-">Automatic Selection (u6RjOFwuV3SkA1xZAhGOR37ZkEzDct6U-45-)<a class="anchor" aria-label="anchor" href="#automatic-selection-u-rjofwuv-ska-xzahgor-zkezdct-u-"></a></h2>
     <p>Uses the Reed-Solomon construction when \(d \leq 3\); otherwise it falls
 back to the random Bernoulli construction.</p>
     </div>

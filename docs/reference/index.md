@@ -90,6 +90,8 @@
   : Check if Integer is a Prime Power
 - [`print(`*`<galois_field>`*`)`](https://myaseen208.github.io/ppgt/reference/print.galois_field.md)
   : Print a Galois Field Object
+- [`is_kts()`](https://myaseen208.github.io/ppgt/reference/is_kts.md) :
+  Verify the Defining Properties of a Kirkman Triple System
 
 ## Documentation Topics
 

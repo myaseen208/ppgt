@@ -26,6 +26,30 @@ testthat::test_that("simulate_group_testing validates dimensions and probabiliti
   )
 })
 
+testthat::test_that("simulate_group_testing supports noisy pool outcomes with a reproducible seed", {
+  M <- ppgt::pp_matrix(q = 4L, d = 3L, nl = 5L)
+  Y_tilde <- integer(64L)
+  Y_tilde[c(2L, 13L)] <- 1L
+
+  sim1 <- ppgt::simulate_group_testing(M, Y_tilde, s_e = 0.95, s_p = 0.99, seed = 42L)
+  sim2 <- ppgt::simulate_group_testing(M, Y_tilde, s_e = 0.95, s_p = 0.99, seed = 42L)
+
+  testthat::expect_identical(sim1$mode, "noisy")
+  testthat::expect_equal(sim1$z, sim2$z)  # same seed -> reproducible noisy outcomes
+  testthat::expect_length(sim1$s_e, nrow(M))
+  testthat::expect_length(sim1$s_p, nrow(M))
+  testthat::expect_true(all(sim1$s_e == 0.95))
+  testthat::expect_true(all(sim1$s_p == 0.99))
+
+  # A .Random.seed already present in .GlobalEnv is saved and restored, not
+  # merely removed.
+  set.seed(1L)
+  before <- get(".Random.seed", envir = .GlobalEnv)
+  invisible(ppgt::simulate_group_testing(M, Y_tilde, s_e = 0.95, seed = 7L))
+  after <- get(".Random.seed", envir = .GlobalEnv)
+  testthat::expect_identical(before, after)
+})
+
 testthat::test_that("run_testing_workflow supports non-adaptive pp_decode stage 1", {
   M <- ppgt::pp_matrix(q = 4L, d = 3L, nl = 5L)
   Y_tilde <- integer(64L)

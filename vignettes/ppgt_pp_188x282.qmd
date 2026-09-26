@@ -1,0 +1,210 @@
+---
+title: "Building a 188 x 282 pooling matrix"
+author: "Muhammad Yaseen"
+date: last-modified
+format:
+  html:
+    self-contained: true
+    number-sections: true
+    toc: true
+    toc-depth: 3
+    highlight-style: github
+    code-fold: false
+    code-tools: true
+    html-math-method: mathjax
+vignette: >
+  %\VignetteIndexEntry{Building a 188 x 282 pooling matrix}
+  %\VignetteEngine{quarto::html}
+  %\VignetteEncoding{UTF-8}
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = " ")
+if (requireNamespace("ppgt", quietly = TRUE)) {
+  library(ppgt)
+} else {
+  pkgload::load_all(export_all = FALSE, helpers = FALSE, quiet = TRUE)
+}
+# ppgt pooling matrices are Matrix::dgCMatrix objects; attaching Matrix lets
+# the base rowSums()/colSums() generics dispatch on them below.
+library(Matrix)
+```
+
+# Purpose
+
+This vignette works through a single concrete Polynomial Pools (PP) design:
+**282 specimens tested using 188 pools**, where every specimen is placed in
+exactly 4 pools and every pool holds exactly 6 specimens. That is a design
+with
+
+- $N = 282$ specimens (columns of $\mathbf{M}$),
+- $J = 188$ pools (rows of $\mathbf{M}$),
+- pool size $n_j = 6$ for every pool $j$,
+- column weight $w_i = 4$ for every specimen $i$.
+
+# Construction
+
+The matrix is built with a single call to `pp_matrix()`:
+
+```{r build}
+M4 <- pp_matrix(q = 47, d = 3, nl = 4, N = 282)
+dim(M4)
+```
+
+`pp_matrix()` builds its design over the finite field $\mathrm{GF}(q)$, using
+dimension `d` and `nl` layers (see `?pp_matrix` and the `ppgt_pp` vignette for
+the full construction). The three arguments interact as follows:
+
+- `q = 47` is the field order. 47 is prime, so $\mathrm{GF}(47)$ exists, and
+  each layer of the design contributes exactly $q = 47$ pools.
+- `nl = 4` is the number of layers, so the pool count is
+  $J = n_l \, q = 4 \times 47 = 188$, and every specimen is assigned to
+  exactly $n_l = 4$ pools (one per layer).
+- `d = 3` is the PP dimension, which fixes the canonical pool size to
+  $q^{d-1} = 47^2 = 2209$ in the *full* (untruncated) design with
+  $N_{\max} = q^d = 47^3$ specimens.
+- `N = 282` truncates that full design down to its first 282 columns. Because
+  $282 = 6 \times 47 = 6q$ is a small multiple of $q$, the truncated design
+  keeps only 6 of the $q^{d-2} = 47$ possible "column blocks" per pool, so
+  every pool's row sum drops from the full-design value of 2209 down to 6.
+
+The two products $188 = 4 \times 47$ and $282 = 6 \times 47$ both factor
+through $q = 47$, and this is exactly what keeps every row sum equal to 6 and
+every column weight equal to 4 (rather than only approximately so): $q$
+divides $N$ exactly (`pp_matrix()` requires `N %% q == 0`), so the truncation
+boundary falls cleanly between pool blocks and does not cut any pool's row in
+half.
+
+Every incidence $M_{ji} = 1$ is counted once from the pool side (as a 1 in
+row $j$) and once from the specimen side (as a 1 in column $i$), so the total
+number of incidences can be computed two ways:
+$$
+J \, n_j = 188 \times 6 = 1128, \qquad N \, w_i = 282 \times 4 = 1128.
+$$
+Both give the same total, 1128, which is confirmed numerically below.
+
+# Verification
+
+```{r verify}
+dim(M4)
+
+# apply() works directly on the sparse matrix, matching the original script
+table(apply(M4, 1, sum))
+table(apply(M4, 2, sum))
+
+# rowSums()/colSums() dispatch to Matrix's sparse-aware methods (library(Matrix)
+# was attached above) and are much faster for larger matrices
+table(rowSums(M4))
+table(colSums(M4))
+
+stopifnot(
+  nrow(M4) == 188L,
+  ncol(M4) == 282L,
+  all(Matrix::rowSums(M4) == 6L),
+  all(Matrix::colSums(M4) == 4L)
+)
+
+total_incidences <- sum(M4)
+total_incidences
+stopifnot(total_incidences == 188L * 6L, total_incidences == 282L * 4L)
+```
+
+## Pairwise overlap between specimens
+
+The PP construction guarantees that any two distinct specimens share at most
+$d - 1$ pools. With $d = 3$ here, that bound is 2. The specimen-by-specimen
+overlap matrix is $\mathbf{M}^\top\mathbf{M}$; its off-diagonal entries are
+the pairwise pool-sharing counts $|\mathcal{J}_i \cap \mathcal{J}_{i'}|$:
+
+```{r overlap}
+overlap <- Matrix::crossprod(M4)
+diag(overlap) <- 0L  # ignore the diagonal (each specimen "overlaps" itself)
+
+max_overlap <- max(overlap)
+max_overlap
+
+stopifnot(max_overlap <= 2L)  # the d - 1 = 2 theoretical bound
+```
+
+The maximum pairwise overlap actually attained, `r max_overlap`, is within
+the theoretical bound $d - 1 = 2$.
+
+# Efficiency
+
+Testing all 282 specimens individually would need 282 tests. This design
+needs only $J = 188$ pooled tests, a saving of
+
+```{r efficiency}
+n_specimens <- ncol(M4)
+n_pools <- nrow(M4)
+
+n_specimens
+n_pools
+
+saving_pct <- 100 * (1 - n_pools / n_specimens)
+round(saving_pct, 1)
+```
+
+so pooling 282 specimens into 188 pools cuts the number of tests by about
+`r round(saving_pct, 1)`%, at the cost of the resolution limits discussed
+next.
+
+# Decoding
+
+`pp_decode()` runs the package's combined-oracle stage-1 pipeline (COMP, then
+GPSR refinement if needed) on observed pool outcomes; see `?pp_decode` and
+the `ppgt_pp` vignette for the full pipeline. This matrix's stored detection
+limit is:
+
+```{r kmax}
+attr(M4, "pp")$k_max
+```
+
+so exact COMP recovery is guaranteed only up to `r attr(M4, "pp")$k_max`
+true positive out of 282. The example below simulates exactly that many
+positives with a fixed seed, so the whole example is reproducible.
+
+```{r decode}
+set.seed(20260926)
+
+Y_tilde <- integer(n_specimens)
+Y_tilde[137] <- 1L  # the one simulated positive specimen
+
+# Latent pool status: z_tilde_j = 1 iff pool j contains at least one positive
+z_tilde <- as.integer(as.vector(M4 %*% Y_tilde) > 0L)
+sum(z_tilde)  # number of positive pools
+
+decoded <- pp_decode(M4, z_tilde, verbose = FALSE)
+decoded$positives
+decoded$method
+
+stopifnot(identical(decoded$positives, which(Y_tilde == 1L)))
+```
+
+`pp_decode()` recovers the single simulated positive specimen exactly, using
+only the `r sum(z_tilde)` positive pools out of 188 as evidence.
+
+# Matrix structure
+
+```{r heatmap, fig.width=7, fig.height=5}
+Matrix::image(
+  M4,
+  main = "188 x 282 PP pooling matrix (pools x specimens)",
+  xlab = "Specimen",
+  ylab = "Pool"
+)
+```
+
+Each layer of `nl = 4` contributes a horizontal band of $q = 47$ pools; the
+banded pattern reflects the polynomial-evaluation structure described in the
+`ppgt_pp` vignette.
+
+# Session info
+
+```{r session-info}
+sessionInfo()
+```

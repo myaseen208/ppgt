@@ -19,7 +19,7 @@ conservative rule to the corrected base rows."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">Pooled Group Testing Design Toolkit</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -151,7 +151,7 @@ is not the stage-1 plus stage-2 workflow from the paper above.</p>
 <span class="r-in"><span><span class="va">y_error</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">15</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="op">-</span> <span class="va">y_error</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">15</span><span class="op">)</span><span class="op">]</span></span></span>
 <span class="r-in"><span><span class="va">result2</span> <span class="op">&lt;-</span> <span class="fu">hyper_ec_decode</span><span class="op">(</span><span class="va">y_error</span>, <span class="va">design</span>, method <span class="op">=</span> <span class="st">"syndrome"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">result2</span><span class="op">$</span><span class="va">errors_detected</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2</span>
 <span class="r-in"><span><span class="va">result2</span><span class="op">$</span><span class="va">errors_corrected</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">result2</span><span class="op">$</span><span class="va">x_decoded</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span></span></span>

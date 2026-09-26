@@ -83,7 +83,7 @@ For an active set \\\mathcal{S} \subseteq \\1,\ldots,N\\\\ with
 \subseteq \\1,\ldots,N\\ \text{ with } \|\mathcal{S}\_1\|,
 \|\mathcal{S}\_2\| \leq d. \$\$
 
-## Reed-Solomon Construction (9LPR5XxA8tN6Y6t3TXvKwG01TAgq7elb-13-)
+## Reed-Solomon Construction (u6RjOFwuV3SkA1xZAhGOR37ZkEzDct6U-13-)
 
 Let \\q\\ be the smallest prime power for which there exists an integer
 \\k \geq 1\\ such that \\q^k \geq N\\ and \\L = d(k-1)+1 \leq q+1\\.
@@ -102,7 +102,7 @@ resulting binary design is \\d\\-disjunct and therefore \\d\\-separable.
 The argument `M` is ignored for this method because \\J\\ is fixed by
 \\q\\, \\k\\, and \\d\\.
 
-## Random Bernoulli Construction (9LPR5XxA8tN6Y6t3TXvKwG01TAgq7elb-40-)
+## Random Bernoulli Construction (u6RjOFwuV3SkA1xZAhGOR37ZkEzDct6U-40-)
 
 If the requested number of pools is not supplied, use the theoretical
 lower bound \$\$ J \geq 2 \binom{d}{1} \log_2(N) = 2 d \log_2(N). \$\$
@@ -111,7 +111,7 @@ The random construction uses independent Bernoulli entries \$\$ M\_{ji}
 Up to 10 seeds are tried until `.is_d_separable` returns `TRUE`, or the
 retry budget is exhausted.
 
-## Automatic Selection (9LPR5XxA8tN6Y6t3TXvKwG01TAgq7elb-45-)
+## Automatic Selection (u6RjOFwuV3SkA1xZAhGOR37ZkEzDct6U-45-)
 
 Uses the Reed-Solomon construction when \\d \leq 3\\; otherwise it falls
 back to the random Bernoulli construction.

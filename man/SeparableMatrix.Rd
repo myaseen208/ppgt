@@ -79,7 +79,7 @@ The matrix \eqn{\mathbf{M}} is \eqn{d}-separable if
   |\mathcal{S}_1|, |\mathcal{S}_2| \leq d.
 }
 }
-\section{Reed-Solomon Construction (QcBA9pshTi5vvQ1K0N86eCX2EVa4wwkn-13-)}{
+\section{Reed-Solomon Construction (u6RjOFwuV3SkA1xZAhGOR37ZkEzDct6U-13-)}{
 Let \eqn{q} be the smallest prime power for which there exists an integer
 \eqn{k \geq 1} such that \eqn{q^k \geq N} and
 \eqn{L = d(k-1)+1 \leq q+1}. Associate individual \eqn{i} with the
@@ -110,7 +110,7 @@ ignored for this method because \eqn{J} is fixed by \eqn{q}, \eqn{k}, and
 \eqn{d}.
 }
 
-\section{Random Bernoulli Construction (QcBA9pshTi5vvQ1K0N86eCX2EVa4wwkn-40-)}{
+\section{Random Bernoulli Construction (u6RjOFwuV3SkA1xZAhGOR37ZkEzDct6U-40-)}{
 If the requested number of pools is not supplied, use the theoretical lower
 bound
 \deqn{
@@ -126,7 +126,7 @@ Up to 10 seeds are tried until \code{.is_d_separable} returns \code{TRUE},
 or the retry budget is exhausted.
 }
 
-\section{Automatic Selection (QcBA9pshTi5vvQ1K0N86eCX2EVa4wwkn-45-)}{
+\section{Automatic Selection (u6RjOFwuV3SkA1xZAhGOR37ZkEzDct6U-45-)}{
 Uses the Reed-Solomon construction when \eqn{d \leq 3}; otherwise it falls
 back to the random Bernoulli construction.
 }

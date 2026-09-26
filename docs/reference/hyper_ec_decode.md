@@ -119,7 +119,7 @@ y_error <- y_obs
 y_error[c(5, 15)] <- 1 - y_error[c(5, 15)]
 result2 <- hyper_ec_decode(y_error, design, method = "syndrome")
 result2$errors_detected
-#> [1] 1
+#> [1] 2
 result2$errors_corrected
 #> [1] 1
 which(result2$x_decoded == 1)

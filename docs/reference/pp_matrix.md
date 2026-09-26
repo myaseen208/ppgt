@@ -116,7 +116,7 @@ the number of positives stays below the PP detection limit.
 
 ## P-BEST Context
 
-The package documentation uses the term “PP-based P-BEST” for the \\q =
+The package documentation uses the term "PP-based P-BEST" for the \\q =
 8\\, \\d = 3\\, \\n_l = 6\\, \\N = 384\\ matrix family. That matrix
 family is distinct from later package-specific clinical helpers and
 should not be read as a blanket claim about every P-BEST protocol layer.
@@ -2218,7 +2218,9 @@ attr(M_large, "pp")$k_max
 #> [1] 4
 
 # Error: 6 is not a prime power
-if (FALSE) { # \dontrun{
+# \dontrun{
 M_invalid <- pp_matrix(q = 6, d = 3, nl = 5)  # Error!
-} # }
+#> Error in pp_matrix(q = 6, d = 3, nl = 5): q must be a prime power (2, 3, 4, 5, 7, 8, 9, 11, 13, 16, 25, 27, ...).
+#> Got q = 6 which is NOT a prime power.
+# }
 ```

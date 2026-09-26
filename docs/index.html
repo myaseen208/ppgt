@@ -29,7 +29,7 @@
 
     <a class="navbar-brand me-2" href="index.html">Pooled Group Testing Design Toolkit</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -57,76 +57,69 @@
   <main id="main" class="col-md-9"><div class="section level1">
 <div class="page-header"><h1 id="ppgt-pooled-group-testing-design-toolkit">ppgt: Pooled Group Testing Design Toolkit<a class="anchor" aria-label="anchor" href="#ppgt-pooled-group-testing-design-toolkit"></a>
 </h1></div>
-<p><a href="https://github.com/myaseen208/ppgt" class="external-link"><img src="https://img.shields.io/badge/R--CMD--check-passing-brightgreen.svg" alt="R-CMD-check"></a> <a href="https://www.gnu.org/licenses/gpl-3.0.en.html" class="external-link"><img src="https://img.shields.io/badge/License-GPL--3-blue.svg" alt="License: GPL-3"></a> <a href="https://myaseen208.github.io/ppgt"><img src="https://img.shields.io/badge/docs-pkgdown-blue.svg" alt="pkgdown"></a></p>
+<p><a href="https://www.gnu.org/licenses/gpl-3.0.en.html" class="external-link"><img src="https://img.shields.io/badge/License-GPL--3-blue.svg"></a></p>
 <div class="section level2">
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
-<p><strong>ppgt</strong> is an R package for constructing, analyzing, and comparing pooled group testing designs. It brings together a set of classical and modern designs for research and experimentation, including polynomial pooling, PBEST, HYPER, separable and disjunct constructions, and finite-field utilities.</p>
-<p>The package is intended for reproducible method development and documentation-driven workflows. The code, tests, and documentation follow the package notation defined in <code>Notations.tex</code> and are validated with <code><a href="https://devtools.r-lib.org/reference/document.html" class="external-link">devtools::document()</a></code>, <code><a href="https://devtools.r-lib.org/reference/test.html" class="external-link">devtools::test()</a></code>, and <code><a href="https://devtools.r-lib.org/reference/check.html" class="external-link">devtools::check()</a></code>. Use <code><a href="reference/ppgt_notations.html">ppgt_notations()</a></code> to inspect the package notation registry directly.</p>
-</div>
-<div class="section level2">
-<h2 id="features">Features<a class="anchor" aria-label="anchor" href="#features"></a>
-</h2>
-<ul>
-<li>Polynomial pooling design construction and decoding</li>
-<li>PP-based P-BEST design support</li>
-<li>HYPER-style design support</li>
-<li>Separable and disjunct matrix constructors</li>
-<li>GF(q) field construction and arithmetic utilities</li>
-<li>Design comparison helpers</li>
-<li>Roxygen2 documentation and pkgdown-ready articles</li>
-</ul>
+<p><strong>ppgt</strong> is an R package for constructing, analyzing, and comparing pooled group testing designs. It brings together a set of classical and modern designs for research and experimentation, including polynomial pooling, PBEST, HYPER, Kirkman triple systems, other combinatorial designs (BIBDs, hypercubes, arrays, projective planes), and separable/disjunct constructions, together with finite-field (Galois field) utilities and COMP/GPSR decoders.</p>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<div class="section level3">
-<h3 id="from-github">From GitHub<a class="anchor" aria-label="anchor" href="#from-github"></a>
-</h3>
+<p><code>ppgt</code> is not yet on CRAN. Install the development version from GitHub:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/install-deprecated.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"myaseen208/ppgt"</span><span class="op">)</span></span></code></pre></div>
-</div>
-<div class="section level3">
-<h3 id="from-source">From source<a class="anchor" aria-label="anchor" href="#from-source"></a>
-</h3>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"ppgt_0.1.0.tar.gz"</span>, repos <span class="op">=</span> <span class="cn">NULL</span>, type <span class="op">=</span> <span class="st">"source"</span><span class="op">)</span></span></code></pre></div>
-</div>
+<code class="sourceCode R"><span><span class="co"># install.packages("pak")</span></span>
+<span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"myaseen208/ppgt"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># or with remotes</span></span>
+<span><span class="co"># install.packages("remotes")</span></span>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"myaseen208/ppgt"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="quick-start">Quick start<a class="anchor" aria-label="anchor" href="#quick-start"></a>
 </h2>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/myaseen208/ppgt" class="external-link">ppgt</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Construct a PP matrix</span></span>
+<span><span class="co"># Construct a Polynomial Pools (PP) matrix -- the standard PP-based</span></span>
+<span><span class="co"># P-BEST configuration (q = 8, d = 3, nl = 6, N = 384)</span></span>
 <span><span class="va">M</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/pp_matrix.html">pp_matrix</a></span><span class="op">(</span>q <span class="op">=</span> <span class="fl">8</span>, d <span class="op">=</span> <span class="fl">3</span>, nl <span class="op">=</span> <span class="fl">6</span>, N <span class="op">=</span> <span class="fl">384</span><span class="op">)</span></span>
-<span><span class="va">M</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">M</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1]  48 384</span></span>
 <span></span>
-<span><span class="co"># Simulate positives</span></span>
+<span><span class="co"># Simulate two positive individuals</span></span>
 <span><span class="va">x_true</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0L</span>, <span class="fl">384</span><span class="op">)</span></span>
 <span><span class="va">x_true</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">72</span>, <span class="fl">142</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">1L</span></span>
-<span><span class="va">x_true</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">72</span>, <span class="fl">142</span><span class="op">)</span><span class="op">]</span></span>
 <span></span>
-<span><span class="co"># Generate pooled outcomes</span></span>
+<span><span class="co"># Generate pooled outcomes and decode</span></span>
 <span><span class="va">z</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/vector.html" class="external-link">as.vector</a></span><span class="op">(</span><span class="va">M</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="va">x_true</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span></span>
-<span><span class="va">z</span></span>
-<span></span>
-<span><span class="co"># Decode</span></span>
 <span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/pp_decode.html">pp_decode</a></span><span class="op">(</span><span class="va">M</span>, <span class="va">z</span><span class="op">)</span></span>
-<span><span class="va">result</span></span>
-<span><span class="va">result</span><span class="op">$</span><span class="va">positives</span></span></code></pre></div>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; === PP Decode ===</span></span>
+<span><span class="co">#&gt; Matrix: 48 pools x 384 samples</span></span>
+<span><span class="co">#&gt; Positive pools: 11/48</span></span>
+<span><span class="co">#&gt; COMP candidates: 2</span></span>
+<span><span class="co">#&gt; Result: 72, 142</span></span>
+<span><span class="co">#&gt; Method: COMP (exact)</span></span>
+<span><span class="va">result</span><span class="op">$</span><span class="va">positives</span></span>
+<span><span class="co">#&gt; [1]  72 142</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="local-development">Local development<a class="anchor" aria-label="anchor" href="#local-development"></a>
+<h2 id="kirkman-triple-system-kts-helpers">Kirkman triple system (KTS) helpers<a class="anchor" aria-label="anchor" href="#kirkman-triple-system-kts-helpers"></a>
 </h2>
-<p>You can work with the package locally without installing it:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/load_all.html" class="external-link">load_all</a></span><span class="op">(</span><span class="st">"ppgt"</span><span class="op">)</span></span></code></pre></div>
-<p>Then run tests and checks:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/test.html" class="external-link">test</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/check.html" class="external-link">check</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p><code>kirkman_matrix(v)</code> constructs a resolvable Steiner triple system on <code>v</code> points – a Kirkman triple system exists exactly when <code>v %% 6 == 3</code>. Every returned matrix is independently re-verified with <code><a href="reference/is_kts.html">is_kts()</a></code> before it is returned, checking all four properties that define a KTS: block size 3, correct block count, every pair of points covered exactly once, and resolvability into <code>(v-1)/2</code> parallel classes that each partition the points:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># v = 15 is the classic Kirkman schoolgirl problem</span></span>
+<span><span class="va">M15</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/kirkman_matrix.html">kirkman_matrix</a></span><span class="op">(</span><span class="fl">15</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">M15</span><span class="op">)</span>                                  <span class="co"># 35 triples x 15 points</span></span>
+<span><span class="co">#&gt; [1] 35 15</span></span>
+<span><span class="fu"><a href="reference/is_kts.html">is_kts</a></span><span class="op">(</span><span class="va">M15</span><span class="op">)</span>                               <span class="co"># verified: TRUE</span></span>
+<span><span class="co">#&gt; [1] TRUE</span></span>
+<span><span class="co">#&gt; attr(,"reasons")</span></span>
+<span><span class="co">#&gt; character(0)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">M15</span>, <span class="st">"design"</span><span class="op">)</span><span class="op">$</span><span class="va">parallel_class</span>        <span class="co"># which of the 7 "days" each triple is in</span></span>
+<span><span class="co">#&gt;  [1] 1 1 1 1 1 2 2 2 2 2 3 3 3 3 3 4 4 4 4 4 5 5 5 5 5 6 6 6 6 6 7 7 7 7 7</span></span></code></pre></div>
+<p>Any <code>v</code> that is a power of 3 (<code>3, 9, 27, 81, ...</code>, via the affine geometry AG(n,3)) and <code>v = 15</code> (the classical solution built from the lines of PG(3,2)) construct quickly and deterministically. Other admissible <code>v</code> (e.g. <code>21</code>, <code>33</code>, <code>63</code>) fall back to a general randomized search that is not tuned for larger <code>v</code> – it is not guaranteed to succeed even for <code>v = 21</code> – in which case <code><a href="reference/kirkman_matrix.html">kirkman_matrix()</a></code> raises an informative error rather than ever returning an unverified result.</p>
 </div>
 <div class="section level2">
 <h2 id="package-contents">Package contents<a class="anchor" aria-label="anchor" href="#package-contents"></a>
@@ -136,127 +129,69 @@
 </h3>
 <ul>
 <li>
-<code><a href="reference/pp_matrix.html">pp_matrix()</a></code> and <code><a href="reference/pp_decode.html">pp_decode()</a></code>
-</li>
-<li><code><a href="reference/hyper_matrix.html">hyper_matrix()</a></code></li>
+<code><a href="reference/pp_matrix.html">pp_matrix()</a></code> / <code><a href="reference/pp_decode.html">pp_decode()</a></code> / <code><a href="reference/pp_design.html">pp_design()</a></code> / <code><a href="reference/pp_verify.html">pp_verify()</a></code> – Polynomial Pools construction, decoding, and design search</li>
 <li>
-<code><a href="reference/hyper_ec_matrix.html">hyper_ec_matrix()</a></code> and <code><a href="reference/hyper_ec_decode.html">hyper_ec_decode()</a></code>
-</li>
+<code><a href="reference/hyper_matrix.html">hyper_matrix()</a></code> / <code><a href="reference/HyperDesign.html">HyperDesign()</a></code> – HYPER-style pooling matrices</li>
 <li>
-<code><a href="reference/SeparableMatrix.html">SeparableMatrix()</a></code> and <code><a href="reference/DisjunctMatrix.html">DisjunctMatrix()</a></code>
-</li>
+<code><a href="reference/hyper_ec_matrix.html">hyper_ec_matrix()</a></code> / <code><a href="reference/hyper_ec_decode.html">hyper_ec_decode()</a></code> – package-specific experimental parity-augmented extension of HYPER</li>
+<li>
+<code><a href="reference/tapestry_matrix.html">tapestry_matrix()</a></code> – Tapestry-style pooling matrix</li>
+<li>
+<code><a href="reference/SeparableMatrix.html">SeparableMatrix()</a></code> / <code><a href="reference/DisjunctMatrix.html">DisjunctMatrix()</a></code> – d-separable / d-disjunct constructions, self-verified against their defining properties</li>
+<li>
+<code><a href="reference/dorfman_matrix.html">dorfman_matrix()</a></code> / <code><a href="reference/dorfman_optimal_g.html">dorfman_optimal_g()</a></code> – classic two-stage Dorfman pooling</li>
+<li>
+<code><a href="reference/array_matrix.html">array_matrix()</a></code> / <code><a href="reference/array_matrix_3d.html">array_matrix_3d()</a></code> – row/column and 3D array designs</li>
+<li>
+<code><a href="reference/bibd_matrix.html">bibd_matrix()</a></code> – balanced incomplete block designs (built-in for specific <code>(v, k, lambda)</code>)</li>
+<li>
+<code><a href="reference/hypercube_matrix.html">hypercube_matrix()</a></code> – d-dimensional hypercube designs</li>
+<li>
+<code><a href="reference/kirkman_matrix.html">kirkman_matrix()</a></code> / <code><a href="reference/is_kts.html">is_kts()</a></code> – Kirkman triple systems, see above</li>
+<li>
+<code><a href="reference/pg_matrix.html">pg_matrix()</a></code> – projective plane PG(2, q) designs</li>
+<li>
+<code><a href="reference/pbest_clinical_matrix.html">pbest_clinical_matrix()</a></code> – clinical 384-to-94 P-BEST heuristic layout</li>
+<li>
+<code><a href="reference/regular_pooling_matrix.html">regular_pooling_matrix()</a></code> / <code><a href="reference/score_pooling_matrix.html">score_pooling_matrix()</a></code> – prescribed-marginal regular pooling matrices</li>
 </ul>
 </div>
 <div class="section level3">
 <h3 id="finite-field-utilities">Finite-field utilities<a class="anchor" aria-label="anchor" href="#finite-field-utilities"></a>
 </h3>
 <ul>
-<li><code><a href="reference/gf.html">gf()</a></code></li>
-<li><code><a href="reference/gf_add.html">gf_add()</a></code></li>
-<li><code><a href="reference/gf_mult.html">gf_mult()</a></code></li>
-<li><code><a href="reference/gf_pow.html">gf_pow()</a></code></li>
-<li><code><a href="reference/is_prime.html">is_prime()</a></code></li>
-<li><code><a href="reference/is_prime_power.html">is_prime_power()</a></code></li>
+<li>
+<code><a href="reference/gf.html">gf()</a></code>, <code><a href="reference/gf_add.html">gf_add()</a></code>, <code><a href="reference/gf_mult.html">gf_mult()</a></code>, <code><a href="reference/gf_pow.html">gf_pow()</a></code> – Galois field construction and arithmetic</li>
+<li>
+<code><a href="reference/is_prime.html">is_prime()</a></code>, <code><a href="reference/is_prime_power.html">is_prime_power()</a></code>
+</li>
 </ul>
 </div>
 <div class="section level3">
-<h3 id="comparison-tools">Comparison tools<a class="anchor" aria-label="anchor" href="#comparison-tools"></a>
+<h3 id="workflow-and-comparison">Workflow and comparison<a class="anchor" aria-label="anchor" href="#workflow-and-comparison"></a>
 </h3>
 <ul>
-<li><code><a href="reference/compare_all_designs.html">compare_all_designs()</a></code></li>
-<li><code><a href="reference/compare_all_designs_honest.html">compare_all_designs_honest()</a></code></li>
 <li>
-<code>compare_*()</code> helper functions</li>
+<code><a href="reference/PoolMatrix.html">PoolMatrix()</a></code> – unified constructor across all design families</li>
+<li>
+<code><a href="reference/simulate_group_testing.html">simulate_group_testing()</a></code>, <code><a href="reference/run_testing_workflow.html">run_testing_workflow()</a></code>, <code><a href="reference/protocol_summary.html">protocol_summary()</a></code>
+</li>
+<li>
+<code><a href="reference/compare_designs.html">compare_designs()</a></code>, <code><a href="reference/list_designs.html">list_designs()</a></code>, <code><a href="reference/compare_all_designs.html">compare_all_designs()</a></code>, <code><a href="reference/compare_all_designs_honest.html">compare_all_designs_honest()</a></code>
+</li>
 </ul>
-</div>
-</div>
-<div class="section level2">
-<h2 id="design-families">Design families<a class="anchor" aria-label="anchor" href="#design-families"></a>
-</h2>
-<div class="section level3">
-<h3 id="polynomial-pooling-pp">Polynomial Pooling (PP)<a class="anchor" aria-label="anchor" href="#polynomial-pooling-pp"></a>
-</h3>
-<p>Finite-field-based pooling designs with decoding support and clear parameterization in terms of <code>q</code>, <code>d</code>, <code>nl</code>, and <code>N</code>.</p>
-</div>
-<div class="section level3">
-<h3 id="pbest">PBEST<a class="anchor" aria-label="anchor" href="#pbest"></a>
-</h3>
-<p>PBEST is supported in the package through the PP-based 48-pool design configuration and related package documentation.</p>
-</div>
-<div class="section level3">
-<h3 id="hyper">HYPER<a class="anchor" aria-label="anchor" href="#hyper"></a>
-</h3>
-<p>HYPER is supported through an upstream-compatible matrix generator and related package documentation.</p>
-</div>
-<div class="section level3">
-<h3 id="hyperec">HyperEC<a class="anchor" aria-label="anchor" href="#hyperec"></a>
-</h3>
-<p><code><a href="reference/hyper_ec_matrix.html">hyper_ec_matrix()</a></code> and <code><a href="reference/hyper_ec_decode.html">hyper_ec_decode()</a></code> are documented as a <strong>package-specific experimental parity-augmented extension</strong>. They are not presented as a direct implementation of the Hong et al. HYPER procedure.</p>
-</div>
-<div class="section level3">
-<h3 id="separable-and-disjunct-designs">Separable and disjunct designs<a class="anchor" aria-label="anchor" href="#separable-and-disjunct-designs"></a>
-</h3>
-<p>The package includes deterministic and randomized separable/disjunct constructions together with verification helpers.</p>
 </div>
 </div>
 <div class="section level2">
 <h2 id="documentation">Documentation<a class="anchor" aria-label="anchor" href="#documentation"></a>
 </h2>
 <ul>
-<li>Package reference: pkgdown site</li>
+<li>Package reference: <a href="https://github.com/myaseen208/ppgt" class="external-link">github.com/myaseen208/ppgt</a>
+</li>
 <li>Notation registry: <code><a href="reference/ppgt_notations.html">ppgt_notations()</a></code>
 </li>
-<li>Intro article: <code>ppgt_theory</code>
+<li>Vignettes: <code>ppgt_theory</code> (overview), and topic articles <code>ppgt_pp</code>, <code>ppgt_pp_188x282</code> (worked 188 x 282 pooling matrix example), <code>ppgt_pbest</code>, <code>ppgt_hyper</code>, <code>ppgt_hyperec</code>, <code>ppgt_galois_field</code>, <code>ppgt_separable_disjunct</code>, <code>ppgt_comparisons</code>, <code>ppgt_diagnostics</code>
 </li>
-<li>Topic articles:
-<ul>
-<li><code>ppgt_pp</code></li>
-<li><code>ppgt_pbest</code></li>
-<li><code>ppgt_hyper</code></li>
-<li><code>ppgt_hyperec</code></li>
-<li><code>ppgt_galois_field</code></li>
-<li><code>ppgt_separable_disjunct</code></li>
-<li><code>ppgt_comparisons</code></li>
-<li><code>ppgt_diagnostics</code></li>
-</ul>
-</li>
-<li>Workflow guide: package documentation and roxygen comments</li>
-</ul>
-</div>
-<div class="section level2">
-<h2 id="testing-and-validation">Testing and validation<a class="anchor" aria-label="anchor" href="#testing-and-validation"></a>
-</h2>
-<p>Current package validation includes:</p>
-<ul>
-<li><code><a href="https://devtools.r-lib.org/reference/document.html" class="external-link">devtools::document()</a></code></li>
-<li><code><a href="https://devtools.r-lib.org/reference/test.html" class="external-link">devtools::test()</a></code></li>
-<li><code><a href="https://devtools.r-lib.org/reference/check.html" class="external-link">devtools::check()</a></code></li>
-</ul>
-<p>The package is maintained so that these commands run cleanly in the release workflow.</p>
-</div>
-<div class="section level2">
-<h2 id="release-notes">Release notes<a class="anchor" aria-label="anchor" href="#release-notes"></a>
-</h2>
-<div class="section level3">
-<h3 id="ppgt-010">ppgt 0.1.0<a class="anchor" aria-label="anchor" href="#ppgt-010"></a>
-</h3>
-<ul>
-<li>Version updated to <code>0.1.0</code>
-</li>
-<li>Package metadata and documentation prepared for a professional release</li>
-<li>HYPER-EC material re-scoped as an experimental package extension</li>
-<li>Finite-field helpers and core design constructors documented and tested</li>
-</ul>
-</div>
-</div>
-<div class="section level2">
-<h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
-</h2>
-<ul>
-<li>Dorfman, R. (1943). The detection of defective members of large populations.</li>
-<li>Hong, F. et al. (2022). HYPER pooled testing results.</li>
-<li>Zismanov, V. et al. (2024). PBEST design paper.</li>
-<li>Additional references are listed in the package articles and reference manual.</li>
 </ul>
 </div>
 <div class="section level2">
@@ -265,9 +200,12 @@
 <p>GPL-3</p>
 </div>
 <div class="section level2">
-<h2 id="author">Author<a class="anchor" aria-label="anchor" href="#author"></a>
+<h2 id="author-and-citation">Author and citation<a class="anchor" aria-label="anchor" href="#author-and-citation"></a>
 </h2>
-<p>Muhammad Yaseen</p>
+<p>Package author and maintainer: <strong>Muhammad Yaseen</strong> (<a href="mailto:myaseen208@gmail.com" class="email">myaseen208@gmail.com</a>).</p>
+<p>Contributors: Christopher McMahan, Christopher Bilder, Joshua Tebbs, and Pranta Das.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>Yaseen, <span class="fu">M.</span> (<span class="dv">2026</span>). ppgt<span class="sc">:</span> Pooled Group Testing Design Toolkit.</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>R package version <span class="dv">0</span>.<span class="dv">1</span>.<span class="fl">2.</span> https<span class="sc">:</span><span class="er">//</span>github.com<span class="sc">/</span>myaseen208<span class="sc">/</span>ppgt</span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
@@ -296,7 +234,8 @@
 <div class="developers">
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li>Muhammad Yaseen <br><small class="roles"> Author, maintainer </small>   </li>
+<li>Muhammad Yaseen <br><small class="roles"> Author, maintainer, copyright holder </small>   </li>
+<li><a href="authors.html">More about authors...</a></li>
 </ul>
 </div>
 

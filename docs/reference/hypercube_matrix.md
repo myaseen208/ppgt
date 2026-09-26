@@ -74,6 +74,7 @@ Other pooling_designs:
 [`dorfman_optimal_g()`](https://myaseen208.github.io/ppgt/reference/dorfman_optimal_g.md),
 [`hyper_ec_matrix()`](https://myaseen208.github.io/ppgt/reference/hyper_ec_matrix.md),
 [`hyper_matrix()`](https://myaseen208.github.io/ppgt/reference/hyper_matrix.md),
+[`is_kts()`](https://myaseen208.github.io/ppgt/reference/is_kts.md),
 [`kirkman_matrix()`](https://myaseen208.github.io/ppgt/reference/kirkman_matrix.md),
 [`list_designs()`](https://myaseen208.github.io/ppgt/reference/list_designs.md),
 [`pbest_clinical_matrix()`](https://myaseen208.github.io/ppgt/reference/pbest_clinical_matrix.md),

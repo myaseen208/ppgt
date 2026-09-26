@@ -26,3 +26,8 @@
 
 - [Incidence-Matrix
   Diagnostics](https://myaseen208.github.io/ppgt/articles/ppgt_diagnostics.md):
+
+### Examples
+
+- [Building a 188 x 282 pooling
+  matrix](https://myaseen208.github.io/ppgt/articles/ppgt_pp_188x282.md):

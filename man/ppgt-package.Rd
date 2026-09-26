@@ -82,4 +82,12 @@ Authors:
   \item Muhammad Yaseen \email{myaseen208@gmail.com} [copyright holder]
 }
 
+Other contributors:
+\itemize{
+  \item Christopher McMahan (\href{https://orcid.org/0000-0001-5056-9615}{ORCID}) [contributor]
+  \item Christopher Bilder (\href{https://orcid.org/0000-0002-2848-8576}{ORCID}) [contributor]
+  \item Joshua Tebbs (\href{https://orcid.org/0000-0002-6762-7241}{ORCID}) [contributor]
+  \item Pranta Das [contributor]
+}
+
 }

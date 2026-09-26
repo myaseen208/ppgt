@@ -78,8 +78,11 @@ test_that("hypercube_matrix creates correct structure", {
   expect_true(all(Matrix::rowSums(M) == 25))
 })
 
-test_that("kirkman_matrix creates a valid KTS for v = 3, 9, 15 (shape + is_kts)", {
-  for (v in c(3L, 9L, 15L)) {
+test_that("kirkman_matrix creates a valid KTS for v = 3, 9, 15, 27, 81 (shape + is_kts)", {
+  # v = 3, 9, 27, 81 all go through the deterministic AG(n,3) construction;
+  # v = 15 goes through the dedicated PG(3,2) spread packing. All five are
+  # fast and exact -- no randomized search involved.
+  for (v in c(3L, 9L, 15L, 27L, 81L)) {
     M <- kirkman_matrix(v)
     b <- (v * (v - 1L)) %/% 6L
 
@@ -94,6 +97,48 @@ test_that("kirkman_matrix creates a valid KTS for v = 3, 9, 15 (shape + is_kts)"
   }
 })
 
+test_that(".kts_general_search directly finds a KTS(9) quickly (fast, always run)", {
+  # kirkman_matrix(9) now dispatches to the fast deterministic AG(2,3)
+  # construction (.kts_ag3()), not to this randomized search. The general
+  # search is still live library code -- it is the fallback used for v that
+  # match none of the dedicated constructions (e.g. v = 21, 33) -- so it is
+  # exercised directly here, on a v small enough to resolve in well under a
+  # second, rather than only via the slow, skip_on_cran()-gated end-to-end
+  # tests below.
+  classes <- ppgt:::.kts_general_search(9L)
+  expect_false(is.null(classes))
+  expect_equal(length(classes), 4L)  # (9-1)/2 parallel classes
+  expect_true(all(vapply(classes, length, integer(1L)) == 3L))  # 9/3 blocks each
+
+  blocks <- unlist(classes, recursive = FALSE)
+  rows_i <- unlist(lapply(seq_along(blocks), function(i) rep(i, 3L)))
+  cols_j <- unlist(blocks)
+  M <- Matrix::sparseMatrix(
+    i = rows_i, j = cols_j, x = rep(1L, length(rows_i)), dims = c(12L, 9L)
+  )
+  attr(M, "design") <- list(
+    parallel_class = rep(seq_along(classes), each = 3L)
+  )
+  expect_true(is_kts(M))
+
+  # A budget too small to succeed returns NULL rather than erroring.
+  expect_null(
+    ppgt:::.kts_general_search(21L, n_candidates = 5L, max_nodes = 1L, max_attempts = 1L)
+  )
+})
+
+test_that(".kts_pow3_exponent identifies exact powers of 3 and only those", {
+  expect_equal(ppgt:::.kts_pow3_exponent(3L), 1L)
+  expect_equal(ppgt:::.kts_pow3_exponent(9L), 2L)
+  expect_equal(ppgt:::.kts_pow3_exponent(27L), 3L)
+  expect_equal(ppgt:::.kts_pow3_exponent(81L), 4L)
+  expect_true(is.na(ppgt:::.kts_pow3_exponent(15L)))
+  expect_true(is.na(ppgt:::.kts_pow3_exponent(21L)))
+  expect_true(is.na(ppgt:::.kts_pow3_exponent(33L)))
+  expect_true(is.na(ppgt:::.kts_pow3_exponent(63L)))
+  expect_true(is.na(ppgt:::.kts_pow3_exponent(1L)))
+})
+
 test_that("kirkman_matrix rejects invalid v with an informative error, not a silent NULL", {
   expect_error(kirkman_matrix(10), "v == 3 \\(mod 6\\)")
   expect_error(kirkman_matrix(2), "v must be an integer >= 3")
@@ -102,13 +147,32 @@ test_that("kirkman_matrix rejects invalid v with an informative error, not a sil
 })
 
 test_that("kirkman_matrix(v = 21) either succeeds (and passes is_kts) or fails with the documented budget error", {
-  # v = 21 is beyond the two dedicated fast constructions (v = 9 general
-  # search, v = 15 PG(3,2)); the general search-based path is a randomized
-  # combinatorial search that can take up to roughly a minute here, so this
-  # is skipped on CRAN/CI rather than slowing down every check.
+  # v = 21 is beyond the dedicated fast constructions (AG(n,3) for powers of
+  # 3, PG(3,2) for v = 15); no deterministic construction is implemented for
+  # it, so it falls back to the randomized general search. Empirically this
+  # search does not reliably find a KTS(21) within its budget (observed
+  # ~100s to a budget error with the default seed) -- this test documents
+  # and tolerates either outcome rather than asserting success, and is
+  # skipped on CRAN/CI rather than slowing down every check.
   skip_on_cran()
   skip_on_ci()
   result <- tryCatch(kirkman_matrix(21L), error = function(e) e)
+  if (inherits(result, "error")) {
+    expect_match(
+      conditionMessage(result),
+      "computational budget|guaranteed to construct quickly"
+    )
+  } else {
+    expect_true(is_kts(result))
+  }
+})
+
+test_that("kirkman_matrix(v = 33) either succeeds (and passes is_kts) or fails with the documented budget error", {
+  # Same fallback path and the same caveat as v = 21 above; v = 33 has no
+  # dedicated deterministic construction either.
+  skip_on_cran()
+  skip_on_ci()
+  result <- tryCatch(kirkman_matrix(33L), error = function(e) e)
   if (inherits(result, "error")) {
     expect_match(
       conditionMessage(result),

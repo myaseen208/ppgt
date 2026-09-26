@@ -80,8 +80,22 @@ method. *Nature Communications*, 13, Article 3626.
 
 ## Author
 
-**Maintainer**: Muhammad Yaseen <myaseen208@gmail.com>
+**Maintainer**: Muhammad Yaseen <myaseen208@gmail.com> \[copyright
+holder\]
 
 Authors:
 
-- Muhammad Yaseen <myaseen208@gmail.com>
+- Muhammad Yaseen <myaseen208@gmail.com> \[copyright holder\]
+
+Other contributors:
+
+- Christopher McMahan ([ORCID](https://orcid.org/0000-0001-5056-9615))
+  \[contributor\]
+
+- Christopher Bilder ([ORCID](https://orcid.org/0000-0002-2848-8576))
+  \[contributor\]
+
+- Joshua Tebbs ([ORCID](https://orcid.org/0000-0002-6762-7241))
+  \[contributor\]
+
+- Pranta Das \[contributor\]
