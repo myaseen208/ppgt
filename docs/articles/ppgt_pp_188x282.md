@@ -12,7 +12,21 @@ That is a design with
 - pool size \\n_j = 6\\ for every pool \\j\\,
 - column weight \\w_i = 4\\ for every specimen \\i\\.
 
-## 2 Construction
+## 2 Installation
+
+`ppgt` is not yet on CRAN. Install the development version from GitHub:
+
+``` r
+
+# install.packages("pak")
+pak::pak("myaseen208/ppgt")
+
+# or with remotes
+# install.packages("remotes")
+remotes::install_github("myaseen208/ppgt")
+```
+
+## 3 Construction
 
 The matrix is built with a single call to
 [`pp_matrix()`](https://myaseen208.github.io/ppgt/reference/pp_matrix.md):
@@ -59,7 +73,7 @@ Every incidence \\M\_{ji} = 1\\ is counted once from the pool side (as a
 \\ n_j = 188 \times 6 = 1128, \qquad N \\ w_i = 282 \times 4 = 1128. \\
 Both give the same total, 1128, which is confirmed numerically below.
 
-## 3 Verification
+## 4 Verification
 
 ``` r
 dim(M4)
@@ -99,7 +113,7 @@ total_incidences
 stopifnot(total_incidences == 188L * 6L, total_incidences == 282L * 4L)
 ```
 
-### 3.1 Pairwise overlap between specimens
+### 4.1 Pairwise overlap between specimens
 
 The PP construction guarantees that any two distinct specimens share at
 most \\d - 1\\ pools. With \\d = 3\\ here, that bound is 2. The
@@ -121,7 +135,7 @@ stopifnot(max_overlap <= 2L)  # the d - 1 = 2 theoretical bound
 The maximum pairwise overlap actually attained, 1, is within the
 theoretical bound \\d - 1 = 2\\.
 
-## 4 Efficiency
+## 5 Efficiency
 
 Testing all 282 specimens individually would need 282 tests. This design
 needs only \\J = 188\\ pooled tests, a saving of
@@ -143,7 +157,7 @@ round(saving_pct, 1)
 so pooling 282 specimens into 188 pools cuts the number of tests by
 about 33.3%, at the cost of the resolution limits discussed next.
 
-## 5 Decoding
+## 6 Decoding
 
 [`pp_decode()`](https://myaseen208.github.io/ppgt/reference/pp_decode.md)
 runs the package’s combined-oracle stage-1 pipeline (COMP, then GPSR
@@ -185,7 +199,7 @@ stopifnot(identical(decoded$positives, which(Y_tilde == 1L)))
 recovers the single simulated positive specimen exactly, using only the
 4 positive pools out of 188 as evidence.
 
-## 6 Matrix structure
+## 7 Matrix structure
 
 ``` r
 
@@ -203,7 +217,7 @@ Each layer of `nl = 4` contributes a horizontal band of \\q = 47\\
 pools; the banded pattern reflects the polynomial-evaluation structure
 described in the `ppgt_pp` vignette.
 
-## 7 Session info
+## 8 Session info
 
 ``` r
 sessionInfo()

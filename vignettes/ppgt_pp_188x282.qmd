@@ -34,6 +34,7 @@ if (requireNamespace("ppgt", quietly = TRUE)) {
 library(Matrix)
 ```
 
+
 # Purpose
 
 This vignette works through a single concrete Polynomial Pools (PP) design:
@@ -45,6 +46,20 @@ with
 - $J = 188$ pools (rows of $\mathbf{M}$),
 - pool size $n_j = 6$ for every pool $j$,
 - column weight $w_i = 4$ for every specimen $i$.
+
+# Installation
+
+`ppgt` is not yet on CRAN. Install the development version from GitHub:
+
+```r
+# install.packages("pak")
+pak::pak("myaseen208/ppgt")
+
+# or with remotes
+# install.packages("remotes")
+remotes::install_github("myaseen208/ppgt")
+```
+
 
 # Construction
 
